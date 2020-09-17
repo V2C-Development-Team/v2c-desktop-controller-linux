@@ -5,7 +5,8 @@
 ## Build
 
 You need Java 11. This project can be tested and compiled with the following command.
-
+    
+`chmod u+x ./gradlew`
 `gradlew clean shadowJar`
 
 ## Execution
