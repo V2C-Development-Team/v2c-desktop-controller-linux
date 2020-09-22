@@ -17,6 +17,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
+import edu.uco.cs.v2c.desktop.linux.command.CommandParser;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.net.DispatcherHandler;
 import edu.uco.cs.v2c.desktop.linux.ui.LocalUI;
@@ -59,7 +60,9 @@ public class V2CLinuxDesktopController {
       
       Logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher at %1$s.", destination));
       
+      CommandParser commandParser = new CommandParser();
       DispatcherHandler handler = DispatcherHandler.build(destination);
+      handler.registerCommandListener(commandParser);
       
       // catch CTRL + C
       Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -77,6 +80,7 @@ public class V2CLinuxDesktopController {
     } catch(Exception e) {
       Logger.onError(LOG_LABEL, "Exception thrown: "
           + (e.getMessage() == null ? "Unknown." : e.getMessage()));
+      e.printStackTrace();
     }
   }
   
