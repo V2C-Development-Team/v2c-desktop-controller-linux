@@ -19,6 +19,7 @@ import org.apache.commons.cli.Options;
 
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.net.DispatcherHandler;
+import edu.uco.cs.v2c.desktop.linux.ui.LocalUI;
 
 /**
  * Natively delegates tasks for generic desktop applications to execute in
@@ -69,6 +70,10 @@ public class V2CLinuxDesktopController {
           } catch(InterruptedException e) { }
         }
       });
+      
+      LocalUI localUI = new LocalUI();
+      localUI.init();
+      
     } catch(Exception e) {
       Logger.onError(LOG_LABEL, "Exception thrown: "
           + (e.getMessage() == null ? "Unknown." : e.getMessage()));

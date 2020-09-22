@@ -1,4 +1,4 @@
-package edu.uco.cs.v2c.desktop.linux.nick.view;
+package edu.uco.cs.v2c.desktop.linux.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 
-import edu.uco.cs.v2c.desktop.linux.nick.model.CommandDataTable;
+import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
 
 public class ViewCommand {
 

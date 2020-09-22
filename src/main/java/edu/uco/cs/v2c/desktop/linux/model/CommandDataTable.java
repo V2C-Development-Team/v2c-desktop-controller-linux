@@ -1,4 +1,4 @@
-package edu.uco.cs.v2c.desktop.linux.nick.model;
+package edu.uco.cs.v2c.desktop.linux.model;
 
 import javax.swing.table.AbstractTableModel;
 

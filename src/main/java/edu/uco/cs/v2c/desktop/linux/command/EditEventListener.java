@@ -1,9 +1,9 @@
-package edu.uco.cs.v2c.desktop.linux.nick.controller;
+package edu.uco.cs.v2c.desktop.linux.command;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.uco.cs.v2c.desktop.linux.nick.view.EditCommand;
+import edu.uco.cs.v2c.desktop.linux.ui.EditCommand;
 
 public class EditEventListener implements ActionListener {
 

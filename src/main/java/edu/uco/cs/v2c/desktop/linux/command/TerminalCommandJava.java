@@ -1,4 +1,4 @@
-package edu.uco.cs.v2c.desktop.linux.nick.controller;
+package edu.uco.cs.v2c.desktop.linux.command;
 
 import java.io.BufferedReader;
 import java.io.IOException;

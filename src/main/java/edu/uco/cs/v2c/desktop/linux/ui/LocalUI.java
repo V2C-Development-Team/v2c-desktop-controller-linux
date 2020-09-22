@@ -1,17 +1,16 @@
-package edu.uco.cs.v2c.desktop.linux.nick;
+package edu.uco.cs.v2c.desktop.linux.ui;
 
 import javax.swing.JFrame;
 
-import edu.uco.cs.v2c.desktop.linux.nick.view.EditCommand;
-import edu.uco.cs.v2c.desktop.linux.nick.view.ViewCommand;
-
-public class Main {
-	public static void main(String[] args) {
+public class LocalUI {
+	public void init() {
 		JFrame window1 = new JFrame();
-		window1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// XXX commented out to keep from killing connection to dispatcher
+		// window1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window1.setLocation(400, 100);
 		JFrame window2 = new JFrame();
-		window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// XXX commented out to keep from killing connection to dispatcher
+		// window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window2.setLocation(800, 800);
 
 		var editCommand = new EditCommand(window1);
