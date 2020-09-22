@@ -7,6 +7,7 @@ apply plugin: 'eclipse'
 
 repositories {
   jcenter()
+  maven { url 'https://jitpack.io' }
 }
 
 group = prjGroup
@@ -16,6 +17,7 @@ targetCompatibility = prjCompat
 
 dependencies {
   implementation 'commons-cli:commons-cli:1.4'
+  implementation 'org.java-websocket:Java-WebSocket:1.5.1'
   implementation 'org.json:json:20200518'
   testImplementation 'org.easymock:easymock:4.0.2'
   testImplementation 'junit:junit:4.13'

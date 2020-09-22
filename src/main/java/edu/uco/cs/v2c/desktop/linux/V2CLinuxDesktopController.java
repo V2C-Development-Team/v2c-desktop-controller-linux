@@ -18,6 +18,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
+import edu.uco.cs.v2c.desktop.linux.net.DispatcherHandler;
 
 /**
  * Natively delegates tasks for generic desktop applications to execute in
@@ -27,10 +28,10 @@ import edu.uco.cs.v2c.desktop.linux.log.Logger;
  */
 public class V2CLinuxDesktopController {
   
-  private static final int DEFAULT_DISPATCHER_PORT = 5698;
-  private static final String DISPATCHER_PORT_PARAM_LONG = "port";
-  private static final String DISPATCHER_PORT_PARAM_SHORT = "p";
-  private static final String LOG_LABEL = "V2C-LDC";
+  private static final String DEFAULT_DESTINATION = "ws://127.0.0.1:2585/v1/messages";
+  private static final String DESTINATION_PARAM_LONG = "destination";
+  private static final String DESTINATION_PARAM_SHORT = "d";
+  private static final String LOG_LABEL = "CONTROLLER";
   
   /**
    * Entry-point.
@@ -38,33 +39,40 @@ public class V2CLinuxDesktopController {
    * @param args the program arguments
    */
   public static void main(String[] args) {
-    final Logger logger = new Logger();
-    
-    try {
+    try {      
       Options options = new Options();
-      options.addOption(DISPATCHER_PORT_PARAM_SHORT, DISPATCHER_PORT_PARAM_LONG, true,
-          "Specifies the default dispatcher port. Default = " + DEFAULT_DISPATCHER_PORT);
+      options.addOption(DESTINATION_PARAM_SHORT, DESTINATION_PARAM_LONG, true,
+          "Specifies the default dispatcher address. Default = " + DEFAULT_DESTINATION);
       CommandLineParser parser = new DefaultParser();
       CommandLine cmd = parser.parse(options, args);
       
-      int port;
+      String destination = null;
       
-      if(cmd.hasOption(DISPATCHER_PORT_PARAM_LONG)) {
-        logger.onDebug(LOG_LABEL, "Picked up an explicitly specified port.");
-        port = Integer.parseInt(cmd.getOptionValue(DISPATCHER_PORT_PARAM_LONG));
+      if(cmd.hasOption(DESTINATION_PARAM_LONG)) {
+        Logger.onDebug(LOG_LABEL, "Picked up an explicitly specified destination.");
+        destination = cmd.getOptionValue(DESTINATION_PARAM_LONG);
       } else {
-        logger.onDebug(LOG_LABEL, "No port specified, falling back to default.");
-        port = DEFAULT_DISPATCHER_PORT;
+        Logger.onDebug(LOG_LABEL, "No port specified, falling back to default.");
+        destination = DEFAULT_DESTINATION;
       }
       
-      logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher on port %1$d.", port));
+      Logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher at %1$s.", destination));
       
+      DispatcherHandler handler = DispatcherHandler.build(destination);
+      
+      // catch CTRL + C
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+        @Override public void run() {
+          handler.kill();
+          try {
+            Thread.sleep(1000L);
+          } catch(InterruptedException e) { }
+        }
+      });
     } catch(Exception e) {
-      logger.onError(LOG_LABEL, "Exception thrown: "
+      Logger.onError(LOG_LABEL, "Exception thrown: "
           + (e.getMessage() == null ? "Unknown." : e.getMessage()));
     }
-    
-    logger.onInfo(LOG_LABEL, "Program terminated.");
   }
   
 }

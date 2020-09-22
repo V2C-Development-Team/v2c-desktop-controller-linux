@@ -34,7 +34,7 @@ public class Logger {
   private static final DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
   
   // TODO make the timezone configurable maybe
-  private Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Central"));
+  private static Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Central"));
   
   /**
    * Prints a debugging message.
@@ -42,7 +42,7 @@ public class Logger {
    * @param label the label or relevant module
    * @param message the message
    */
-  public void onDebug(String label, String message) {
+  public static void onDebug(String label, String message) {
     log(System.out, LogLevel.DEBUG, label, message);
   }
   
@@ -52,7 +52,7 @@ public class Logger {
    * @param label the label or relevant module
    * @param message the message
    */
-  public void onInfo(String label, String message) {
+  public static void onInfo(String label, String message) {
     log(System.out, LogLevel.INFO, label, message);
   }
   
@@ -62,11 +62,11 @@ public class Logger {
    * @param label the label or relevant module
    * @param message the message
    */
-  public void onError(String label, String message) {
+  public static void onError(String label, String message) {
     log(System.err, LogLevel.ERROR, label, message);
   }
   
-  private void log(PrintStream out, LogLevel level, String label, String message) {
+  private static void log(PrintStream out, LogLevel level, String label, String message) {
     calendar.setTimeInMillis(System.currentTimeMillis());
     System.out.printf("[%1$s: %2$s] %3$s - %4$s\n",
         sdf.format(calendar.getTime()),
