@@ -19,13 +19,17 @@ public class EditCommand {
 
 	private JFrame window;
 	private JButton saveButton = new JButton("Save");
-	private JTextField commandText = new JTextField("Command");
-	private JTextField executeText = new JTextField("Open browser");
+	private JTextField activationPhraseTextField = new JTextField("Chrome");
+	private JTextField executeTextField = new JTextField("Open browser");
 	private Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 	private JButton executeButton = new JButton("Execute");
+	// private String activationPhrase;
+	// private String executeText;
 
-	public EditCommand(JFrame window) {
+	public EditCommand(JFrame window, String activationPhrase, String executeText) {
 		this.window = window;
+		// this.activationPhrase = activationPhrase;
+		// this.executeText = executeText;
 	}
 
 	public void init() {
@@ -40,7 +44,7 @@ public class EditCommand {
 
 		JLabel whenLabel = new JLabel("When I say");
 		northPanel.add(whenLabel);
-		northPanel.add(commandText);
+		northPanel.add(activationPhraseTextField);
 
 		cp.add(BorderLayout.NORTH, northPanel);
 
@@ -50,7 +54,7 @@ public class EditCommand {
 
 		JLabel executeLabel = new JLabel("Execute Command:");
 		centerPanel.add(executeLabel);
-		centerPanel.add(executeText);
+		centerPanel.add(executeTextField);
 		centerPanel.add(executeButton);
 		cp.add(BorderLayout.CENTER, centerPanel);
 
@@ -64,6 +68,6 @@ public class EditCommand {
 	}
 
 	public String getExecuteTextString() {
-		return executeText.getText();
+		return executeTextField.getText();
 	}
 }

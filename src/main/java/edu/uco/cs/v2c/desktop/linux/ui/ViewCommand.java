@@ -3,11 +3,7 @@ package edu.uco.cs.v2c.desktop.linux.ui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
@@ -18,6 +14,7 @@ public class ViewCommand {
 	private JTable jTable;
 	private JScrollPane jScrollPane;
 	private Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+	// private MouseListener viewCommandMouseListener;
 
 	public ViewCommand(JFrame window) {
 		this.window = window;
@@ -33,6 +30,9 @@ public class ViewCommand {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBorder(emptyBorder);
 		jTable = new JTable(new CommandDataTable());
+		// viewCommandMouseListener = new MouseListener();
+		// jTable.addMouseListener();
+
 		jScrollPane = new JScrollPane(jTable);
 		jTable.setFillsViewportHeight(true);
 		centerPanel.add(jScrollPane);

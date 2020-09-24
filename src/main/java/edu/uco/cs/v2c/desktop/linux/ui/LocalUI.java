@@ -13,8 +13,8 @@ public class LocalUI {
 		// window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window2.setLocation(800, 800);
 
-		var editCommand = new EditCommand(window1);
-		editCommand.init();
+		// var editCommand = new EditCommand(window1);
+		// editCommand.init();
 		var viewCommand = new ViewCommand(window2);
 		viewCommand.init();
 
