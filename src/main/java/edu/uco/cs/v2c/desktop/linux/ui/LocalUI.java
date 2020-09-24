@@ -11,7 +11,7 @@ public class LocalUI {
 		JFrame window2 = new JFrame();
 		// XXX commented out to keep from killing connection to dispatcher
 		// window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window2.setLocation(800, 800);
+		window2.setLocation(800, 100);
 
 		var editCommand = new EditCommand(window1);
 		editCommand.init();
