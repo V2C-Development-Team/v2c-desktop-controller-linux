@@ -68,6 +68,7 @@ public class V2CLinuxDesktopController {
       
       Logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher at %1$s.", destination));
       
+      // Dispatcher
       CommandParser commandParser = new CommandParser();
       DispatcherHandler handler = DispatcherHandler.build(destination);
       handler.registerCommandListener(commandParser);
