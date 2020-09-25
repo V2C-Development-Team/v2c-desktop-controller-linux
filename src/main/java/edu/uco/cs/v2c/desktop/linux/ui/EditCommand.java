@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import edu.uco.cs.v2c.desktop.linux.command.EditEventListener;
-
 public class EditCommand {
 
 	private JFrame window;

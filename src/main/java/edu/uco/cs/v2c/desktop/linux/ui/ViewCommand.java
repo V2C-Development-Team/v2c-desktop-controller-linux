@@ -14,7 +14,7 @@ public class ViewCommand {
 	private JTable jTable;
 	private JScrollPane jScrollPane;
 	private Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-	// private MouseListener viewCommandMouseListener;
+	private ViewCommandEditCommandListener viewCommandEditCommandListener;
 
 	public ViewCommand(JFrame window) {
 		this.window = window;
@@ -30,8 +30,8 @@ public class ViewCommand {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBorder(emptyBorder);
 		jTable = new JTable(new CommandDataTable());
-		// viewCommandMouseListener = new MouseListener();
-		// jTable.addMouseListener();
+		viewCommandEditCommandListener = new ViewCommandEditCommandListener(jTable);
+		jTable.addMouseListener(viewCommandEditCommandListener);
 
 		jScrollPane = new JScrollPane(jTable);
 		jTable.setFillsViewportHeight(true);

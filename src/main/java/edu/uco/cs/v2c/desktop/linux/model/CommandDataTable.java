@@ -25,4 +25,8 @@ public class CommandDataTable extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return data[rowIndex][columnIndex];
     }
+
+    public Object getRowAt(int rowIndex) {
+        return data[rowIndex];
+    }
 }
