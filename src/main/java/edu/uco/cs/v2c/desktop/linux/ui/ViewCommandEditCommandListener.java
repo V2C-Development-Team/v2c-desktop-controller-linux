@@ -28,7 +28,7 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
         int selectedRow = commandTable.rowAtPoint(point);
         int selectedColumn = commandTable.columnAtPoint(point);
         //AbstractTableModel model = (AbstractTableModel)event.getSource();
-        //String columnName = model.getColumnName(selectedColumn);
+        String columnName = ((AbstractTableModel)commandTable).getColumnName(selectedColumn);
         //Object data = model.getValueAt(selectedRow, selectedColumn);
         //System.out.println("Column name = [" + columnName + "], Data = [" + data + "] clicked twice");
         // open new window
