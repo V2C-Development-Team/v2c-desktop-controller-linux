@@ -36,7 +36,7 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
         if (click == 2){
             JFrame window1 = new JFrame();
             window1.setLocation(400, 100);
-            var editCommand = new EditCommand(window1, columnName, columnName));
+            var editCommand = new EditCommand(window1, columnName, columnName);
             editCommand.init(); 
             window1.pack();
             window1.setVisible(true);           
