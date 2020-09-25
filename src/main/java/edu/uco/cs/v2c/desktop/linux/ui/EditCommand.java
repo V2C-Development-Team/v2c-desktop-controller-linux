@@ -17,8 +17,8 @@ public class EditCommand {
 
 	private JFrame window;
 	private JButton saveButton = new JButton("Save");
-	private JTextField activationPhraseTextField = new JTextField("Chrome");
-	private JTextField executeTextField = new JTextField("Open browser");
+	private JTextField activationPhraseTextField = new JTextField();
+	private JTextField executeTextField = new JTextField();
 	private Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 	private JButton executeButton = new JButton("Execute");
 	// private String activationPhrase;
@@ -60,6 +60,8 @@ public class EditCommand {
 		southPanel.setBorder(emptyBorder);
 		southPanel.add(saveButton);
 		cp.add(BorderLayout.SOUTH, southPanel);
+
+		activationPhraseTextField.setText("Open Browser Chrome");
 
 		// add listener
 		executeButton.addActionListener(new EditEventListener(this));
