@@ -20,8 +20,8 @@ public class LocalUI {
 		var viewCommand = new ViewCommand(window2);
 		viewCommand.init();
 
-		window1.pack();
-		window1.setVisible(true);
+		//window1.pack();
+		//window1.setVisible(true);
 		window2.pack();
 		window2.setVisible(true);
 	}
