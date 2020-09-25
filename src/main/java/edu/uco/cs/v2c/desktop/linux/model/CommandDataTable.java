@@ -22,11 +22,13 @@ public class CommandDataTable extends AbstractTableModel {
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
+    public String getValueAt(int rowIndex, int columnIndex) {
         return data[rowIndex][columnIndex];
     }
 
     public Object getRowAt(int rowIndex) {
         return data[rowIndex];
     }
+
+
 }
