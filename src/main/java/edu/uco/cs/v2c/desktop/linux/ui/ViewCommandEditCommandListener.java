@@ -36,7 +36,7 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
         if (click == 2){
             JFrame window1 = new JFrame();
             window1.setLocation(400, 100);
-            var editCommand = new EditCommand(window1);
+            var editCommand = new EditCommand(window1, "" + selectedRow, "" + selectedColumn));
             editCommand.init();            
             System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked twice");
             
