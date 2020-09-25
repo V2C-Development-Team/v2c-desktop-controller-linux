@@ -8,6 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
+import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
 
 public class ViewCommandEditCommandListener extends MouseAdapter {
 
@@ -20,14 +23,19 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
     public void mouseClicked(MouseEvent event) {
         Point point = event.getPoint();
         int click = event.getClickCount();
-        if (click == 2){
-            int selectedRow = commandTable.rowAtPoint(point);
-            System.out.println("Row" + selectedRow + "clicked twice");
-            
-            // System.out.println("Table Clicked twice");
-        } else{
-            System.out.println("Table Clicked once");
+        int selectedRow = commandTable.rowAtPoint(point);
+        int selectedColumn = commandTable.columnAtPoint(point);
+        //AbstractTableModel model = (AbstractTableModel)event.getSource();
+        //String columnName = model.getColumnName(selectedColumn);
+        //Object data = model.getValueAt(selectedRow, selectedColumn);
+        //System.out.println("Column name = [" + columnName + "], Data = [" + data + "] clicked twice");
 
+        if (click == 2){
+            
+            System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked twice");
+            
+        } else{
+            System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked once");
         }
         
          
