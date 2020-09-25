@@ -4,15 +4,17 @@ import javax.swing.JFrame;
 
 public class LocalUI {
 	public void init() {
-		JFrame window1 = new JFrame();
+		
 		// XXX commented out to keep from killing connection to dispatcher
 		// window1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window1.setLocation(400, 100);
+		
 		JFrame window2 = new JFrame();
 		// XXX commented out to keep from killing connection to dispatcher
 		// window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window2.setLocation(800, 800);
 
+		// JFrame window1 = new JFrame();
+		// window1.setLocation(400, 100);
 		// var editCommand = new EditCommand(window1);
 		// editCommand.init();
 		var viewCommand = new ViewCommand(window2);

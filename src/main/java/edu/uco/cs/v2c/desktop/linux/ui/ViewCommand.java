@@ -31,6 +31,7 @@ public class ViewCommand {
 		centerPanel.setBorder(emptyBorder);
 		jTable = new JTable(new CommandDataTable());
 		viewCommandEditCommandListener = new ViewCommandEditCommandListener(jTable);
+		//viewCommandEditCommandListener = new ViewCommandEditCommandListener(this);
 		jTable.addMouseListener(viewCommandEditCommandListener);
 
 		jScrollPane = new JScrollPane(jTable);

@@ -16,6 +16,8 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
 
     private JTable commandTable;
 
+   // public ViewCommandEditCommandListener(ViewCommand viewcommand ){
+
     public ViewCommandEditCommandListener(JTable table ){
         this.commandTable = table;
     }
@@ -29,9 +31,13 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
         //String columnName = model.getColumnName(selectedColumn);
         //Object data = model.getValueAt(selectedRow, selectedColumn);
         //System.out.println("Column name = [" + columnName + "], Data = [" + data + "] clicked twice");
+        // open new window
 
         if (click == 2){
-            
+            JFrame window1 = new JFrame();
+            window1.setLocation(400, 100);
+            var editCommand = new EditCommand(window1);
+            editCommand.init();            
             System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked twice");
             
         } else{
