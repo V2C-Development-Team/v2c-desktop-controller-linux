@@ -1,9 +1,9 @@
-package edu.uco.cs.v2c.desktop.linux.command;
+package edu.uco.cs.v2c.desktop.linux.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.uco.cs.v2c.desktop.linux.ui.EditCommand;
+import edu.uco.cs.v2c.desktop.linux.command.TerminalCommandJava;
 
 public class EditEventListener implements ActionListener {
 
