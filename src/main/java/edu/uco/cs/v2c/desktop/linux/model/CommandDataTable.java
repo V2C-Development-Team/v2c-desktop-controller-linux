@@ -30,5 +30,7 @@ public class CommandDataTable extends AbstractTableModel {
         return data[rowIndex];
     }
 
-
+    public void setValue(int rowIndex, String[] updatedData){
+        data[rowIndex] = updatedData;
+    }
 }
