@@ -16,11 +16,13 @@ import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
 public class ViewCommandEditCommandListener extends MouseAdapter {
 
     private JTable commandTable;
+    private CommandDataTable commandDataTable;
 
     // public ViewCommandEditCommandListener(ViewCommand viewcommand ){
 
-    public ViewCommandEditCommandListener(JTable table) {
+    public ViewCommandEditCommandListener(JTable table, CommandDataTable commandDataTable) {
         this.commandTable = table;
+        this.commandDataTable = commandDataTable;
     }
 
     public void mouseClicked(MouseEvent event) {
@@ -42,7 +44,7 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
                     commandTable.getValueAt(selectedRow, 3).toString(),
                     commandTable.getValueAt(selectedRow, 1).toString(),
                     commandTable.getValueAt(selectedRow, 2).toString() };
-            var editCommand = new EditCommand(window1, fields[0], fields[1], fields[2], fields[3]);
+            var editCommand = new EditCommand(window1, commandDataTable, selectedRow, fields);
             editCommand.init();
             window1.pack();
             window1.setVisible(true);
