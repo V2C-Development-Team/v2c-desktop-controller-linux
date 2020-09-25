@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
+import javax.swing.JFrame;
 import javax.swing.table.AbstractTableModel;
 
 import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
