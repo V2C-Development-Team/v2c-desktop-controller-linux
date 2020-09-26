@@ -2,7 +2,11 @@ package edu.uco.cs.v2c.desktop.linux.ui;
 
 import javax.swing.JFrame;
 
+import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
+
 public class LocalUI {
+  private CommandDataTable cdt = new CommandDataTable();
+  
 	public void init() {
 		
 		// XXX commented out to keep from killing connection to dispatcher
@@ -24,5 +28,9 @@ public class LocalUI {
 		//window1.setVisible(true);
 		window2.pack();
 		window2.setVisible(true);
+	}
+	
+	public CommandDataTable getData() {
+	  return cdt;
 	}
 }

@@ -69,15 +69,16 @@ public class V2CLinuxDesktopController {
         Logger.onDebug(LOG_LABEL, "No port specified, falling back to default.");
         destination = DEFAULT_DESTINATION;
       }
+      
+      LocalUI localUI = new LocalUI();
       if(cmd.hasOption(ENABLE_UI_PARAM_LONG)) {
-        LocalUI localUI = new LocalUI();
         localUI.init();
       }
       
       Logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher at %1$s.", destination));
       
       // Dispatcher
-      CommandParser commandParser = new CommandParser();
+      CommandParser commandParser = new CommandParser(localUI.getData());
       DispatcherHandler handler = DispatcherHandler.build(destination);
       handler.registerCommandListener(commandParser);
       
