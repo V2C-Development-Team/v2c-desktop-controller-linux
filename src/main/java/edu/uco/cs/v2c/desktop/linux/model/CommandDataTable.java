@@ -1,27 +1,38 @@
 package edu.uco.cs.v2c.desktop.linux.model;
 
+import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.PrintWriter;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import edu.uco.cs.v2c.desktop.linux.V2CLinuxDesktopController;
 
 public class CommandDataTable extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
-    private String filePath = "src/main/java/edu/uco/cs/v2c/desktop/linux/model/saveCommands.json";
+    private static final String FILE_NAME = "saveCommands.json";
+    
+    private File file = null;
     private String[] columnNames = { "Command Name", "Description", "Activation Phrase", "Execute" };
-    private String[][] data = readJsonCommandData(filePath);
+    private String[][] data = null;
 
     public CommandDataTable() {
-        data = readJsonCommandData(filePath);
-        writeJsonCommandData(filePath);
+      try {
+        String tempDir = System.getProperty("java.io.tmpdir");
+        file = new File(tempDir, FILE_NAME);
+        boolean alreadyExists = false;
+        if(!(alreadyExists = file.exists())) file.createNewFile();
+        System.out.println(file.getPath());
+        data = readJsonCommandData(!alreadyExists);
+        writeJsonCommandData();
         // String[][] test =
         // readJsonCommandData("src/main/java/edu/uco/cs/v2c/desktop/linux/model/saveCommands.json");
+      } catch(IOException e) {
+        e.printStackTrace();
+      }
     }
 
     @Override
@@ -45,10 +56,10 @@ public class CommandDataTable extends AbstractTableModel {
 
     public void setValue(int rowIndex, String[] updatedData) {
         data[rowIndex] = updatedData;
-        writeJsonCommandData(filePath);
+        writeJsonCommandData();
     }
 
-    private void writeJsonCommandData(String file) {
+    private void writeJsonCommandData() {
         try {
             JSONObject obj = new JSONObject();
             JSONArray commands = new JSONArray();
@@ -62,17 +73,19 @@ public class CommandDataTable extends AbstractTableModel {
             }
             obj.put("commands", commands);
             String jsonString = obj.toString();
-            Path fileName = Path.of(file);
-            Files.writeString(fileName, jsonString);
+            
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.print(jsonString);
+            printWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String[][] readJsonCommandData(String file) {
+    private String[][] readJsonCommandData(boolean readDefault) {
         try {
-            Path fileName = Path.of(file);
-            String jsonString = Files.readString(fileName);
+            String jsonString = V2CLinuxDesktopController.readResource(
+                readDefault ? "/" + FILE_NAME : file.getPath());
             JSONObject obj = new JSONObject(jsonString);
             JSONArray commands = obj.getJSONArray("commands");
             String[][] data = new String[commands.length()][columnNames.length];
@@ -83,7 +96,7 @@ public class CommandDataTable extends AbstractTableModel {
                 }
             }
             return data;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return data;
