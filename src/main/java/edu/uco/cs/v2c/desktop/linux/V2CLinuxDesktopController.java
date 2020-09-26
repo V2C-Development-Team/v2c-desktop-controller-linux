@@ -17,8 +17,10 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
+import edu.uco.cs.v2c.desktop.linux.command.CommandParser;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.net.DispatcherHandler;
+import edu.uco.cs.v2c.desktop.linux.ui.LocalUI;
 
 /**
  * Natively delegates tasks for generic desktop applications to execute in
@@ -32,6 +34,8 @@ public class V2CLinuxDesktopController {
   private static final String DESTINATION_PARAM_LONG = "destination";
   private static final String DESTINATION_PARAM_SHORT = "d";
   private static final String LOG_LABEL = "CONTROLLER";
+  private static final String ENABLE_UI_PARAM_LONG = "enable-ui";
+  private static final String ENABLE_UI_PARAM_SHORT = "u";
   
   /**
    * Entry-point.
@@ -43,6 +47,8 @@ public class V2CLinuxDesktopController {
       Options options = new Options();
       options.addOption(DESTINATION_PARAM_SHORT, DESTINATION_PARAM_LONG, true,
           "Specifies the default dispatcher address. Default = " + DEFAULT_DESTINATION);
+      options.addOption(ENABLE_UI_PARAM_SHORT, ENABLE_UI_PARAM_LONG, false,
+          "Enable User Interface.");
       CommandLineParser parser = new DefaultParser();
       CommandLine cmd = parser.parse(options, args);
       
@@ -55,10 +61,17 @@ public class V2CLinuxDesktopController {
         Logger.onDebug(LOG_LABEL, "No port specified, falling back to default.");
         destination = DEFAULT_DESTINATION;
       }
+      if(cmd.hasOption(ENABLE_UI_PARAM_LONG)) {
+        LocalUI localUI = new LocalUI();
+        localUI.init();
+      }
       
       Logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher at %1$s.", destination));
       
+      // Dispatcher
+      CommandParser commandParser = new CommandParser();
       DispatcherHandler handler = DispatcherHandler.build(destination);
+      handler.registerCommandListener(commandParser);
       
       // catch CTRL + C
       Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -69,9 +82,11 @@ public class V2CLinuxDesktopController {
           } catch(InterruptedException e) { }
         }
       });
+      
     } catch(Exception e) {
       Logger.onError(LOG_LABEL, "Exception thrown: "
           + (e.getMessage() == null ? "Unknown." : e.getMessage()));
+      e.printStackTrace();
     }
   }
   

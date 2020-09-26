@@ -232,6 +232,7 @@ public class DispatcherConnection extends WebSocketClient {
         synchronized(errorListeners) {
           errorListeners.add((WebSocketErrorListener)listener);
         }
+      
     }
     
   }
