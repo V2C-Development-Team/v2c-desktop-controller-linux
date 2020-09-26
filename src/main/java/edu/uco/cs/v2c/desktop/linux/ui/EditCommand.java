@@ -29,7 +29,7 @@ public class EditCommand {
 	private String[] fields;
 
 	private Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-	private JButton executeButton = new JButton("Execute");
+	private JButton executeButton = new JButton("Execute Test Command");
 
 	public EditCommand(JFrame window, CommandDataTable commandDataTable, int rowIndex, String[] fields) {
 		this.window = window;
@@ -75,7 +75,7 @@ public class EditCommand {
 
 		JPanel southPanel = new JPanel();
 		southPanel.setBorder(emptyBorder);
-		saveButton.setEnabled(false);
+		// saveButton.setEnabled(false);
 		southPanel.add(saveButton);
 		cp.add(BorderLayout.SOUTH, southPanel);
 
