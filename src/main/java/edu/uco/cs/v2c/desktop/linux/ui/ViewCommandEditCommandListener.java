@@ -3,7 +3,6 @@ package edu.uco.cs.v2c.desktop.linux.ui;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -41,17 +40,18 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
             JFrame window1 = new JFrame();
             window1.setLocation(400, 100);
             String[] fields = { commandTable.getValueAt(selectedRow, 0).toString(),
-                    commandTable.getValueAt(selectedRow, 3).toString(),
                     commandTable.getValueAt(selectedRow, 1).toString(),
-                    commandTable.getValueAt(selectedRow, 2).toString() };
+                    commandTable.getValueAt(selectedRow, 2).toString(),
+                    commandTable.getValueAt(selectedRow, 3).toString() };
+
             var editCommand = new EditCommand(window1, commandDataTable, selectedRow, fields);
             editCommand.init();
             window1.pack();
             window1.setVisible(true);
-            System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked twice");
-            System.out.println(commandTable.getValueAt(selectedRow, selectedColumn));
+            // System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked twice");
+            // System.out.println(commandTable.getValueAt(selectedRow, selectedColumn));
         } else {
-            System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked once");
+            // System.out.println("Row [" + selectedRow + "][" + selectedColumn + "] clicked once");
         }
 
         // do your real thing here...
