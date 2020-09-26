@@ -14,6 +14,7 @@ package edu.uco.cs.v2c.desktop.linux.net;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.dispatcher.api.DispatcherConnection;
@@ -46,7 +47,7 @@ public class DispatcherHandler implements CommandListener,
   private static final String LOG_LABEL = "HANDLER";
   
   private AtomicBoolean running = new AtomicBoolean(true);
-  private DispatcherConnection connection = null;
+  private AtomicReference<DispatcherConnection> connection = new AtomicReference<>();
   private String destination = null;
   private Thread thread = null;
   
@@ -81,7 +82,7 @@ public class DispatcherHandler implements CommandListener,
    */
   @Override public void onConnect() {
     Logger.onDebug(LOG_LABEL, "Connected to dispatcher.");
-    connection.send(new RegisterListenerPayload()
+    connection.get().send(new RegisterListenerPayload()
         .setApp("desktop")); // TODO make this configurable
   }
 
@@ -128,9 +129,9 @@ public class DispatcherHandler implements CommandListener,
    */
   @Override public void run() {
     try {
-      connection = new DispatcherConnection(destination);
-      connection.registerListener(this);
-      connection.connect();
+      connection.set(new DispatcherConnection(destination));
+      connection.get().registerListener(this);
+      connection.get().connect();
     } catch(Exception e) {
       e.printStackTrace();
     }
@@ -140,11 +141,10 @@ public class DispatcherHandler implements CommandListener,
     } catch(InterruptedException e) { }
     
     try {
-      connection.send(
+      connection.get().send(
           new DeregisterListenerPayload().setApp("desktop")); // TODO make this configurable
       Thread.sleep(1000L);
-      if(connection != null) connection.closeBlocking();
-      System.out.println("...");
+      if(connection != null) connection.get().closeBlocking();
     } catch(Exception e) { }
   }
   
@@ -153,6 +153,18 @@ public class DispatcherHandler implements CommandListener,
    */
   public void kill() {
     running.set(false);
+  }
+  
+  /**
+   * Registers a listener.
+   * 
+   * @param listeners the listener
+   */
+  public void registerCommandListener(Object... listeners) {
+    try {
+      while(connection.get() == null) Thread.sleep(500L);
+      connection.get().registerListener(listeners);
+    } catch(InterruptedException e) { }
   }
 
 }
