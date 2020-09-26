@@ -3,7 +3,6 @@ package edu.uco.cs.v2c.desktop.linux.ui;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -44,6 +43,7 @@ public class ViewCommandEditCommandListener extends MouseAdapter {
                     commandTable.getValueAt(selectedRow, 1).toString(),
                     commandTable.getValueAt(selectedRow, 2).toString(),
                     commandTable.getValueAt(selectedRow, 3).toString() };
+
             var editCommand = new EditCommand(window1, commandDataTable, selectedRow, fields);
             editCommand.init();
             window1.pack();

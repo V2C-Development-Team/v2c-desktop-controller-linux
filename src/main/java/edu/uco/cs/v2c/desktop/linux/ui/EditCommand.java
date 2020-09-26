@@ -75,9 +75,11 @@ public class EditCommand {
 
 		JPanel southPanel = new JPanel();
 		southPanel.setBorder(emptyBorder);
-		// saveButton.setEnabled(false);
+
+    // saveButton.setEnabled(false);
 		southPanel.add(saveButton);
-		cp.add(BorderLayout.SOUTH, southPanel);
+		
+    cp.add(BorderLayout.SOUTH, southPanel);
 
 		// add listener
 		executeButton.addActionListener(new EditEventListener(this));
