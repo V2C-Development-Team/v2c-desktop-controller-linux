@@ -16,8 +16,9 @@ To run it, just do `java -jar build\libs\v2c-desktop-controller-linux.jar`.
 You can optionally specify some command-line arguments.
 
 |Short Param|Long Param|Description        |Default|
-|:----------|:---------|:------------------|:------|
-|-p         |--port    |The port number    |5698   |
+|:----------|:---------|:------------------|:---------|
+|-p         |--port    |The port number    |5698      |
+|-u         |--u       |Enables UI         |Disabled  |
 
 ## License
 
