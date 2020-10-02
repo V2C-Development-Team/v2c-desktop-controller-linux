@@ -31,6 +31,7 @@ package edu.uco.cs.v2c.dispatcher.api.payload.outgoing;
 import org.json.JSONObject;
 
 import edu.uco.cs.v2c.dispatcher.api.payload.MalformedPayloadException;
+import edu.uco.cs.v2c.dispatcher.api.payload.incoming.IncomingPayload.IncomingAction;
 
 /**
  * An outgoing payload to be sent over a WebSocket for the purposes of
@@ -83,7 +84,13 @@ public abstract class OutgoingPayload {
      * Indicates that the payload contains some updated configuration that
      * another module should apply.
      */
-    UPDATE_CONFIGURATION
+    UPDATE_CONFIGURATION,
+    
+    /**
+     * Indicates a keepalive response, in direct response to
+     * {@link IncomingAction#HEARTBEAT}.
+     */
+    HEARTBEAT_ACK
     
   }
   
