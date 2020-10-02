@@ -29,6 +29,7 @@ import edu.uco.cs.v2c.desktop.linux.command.CommandParser;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.net.DispatcherHandler;
 import edu.uco.cs.v2c.desktop.linux.ui.LocalUI;
+import edu.uco.cs.v2c.desktop.linux.command.KeyboardRobot;
 
 /**
  * Natively delegates tasks for generic desktop applications to execute in
