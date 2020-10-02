@@ -36,7 +36,6 @@ public class CommandParser implements CommandListener {
       }
     }
     TerminalCommandJava tempCommand = new TerminalCommandJava();
-		// tempCommand.ExecuteCommand("ping google.com");
 		tempCommand.ExecuteCommand(targetCommand);
     
   }
