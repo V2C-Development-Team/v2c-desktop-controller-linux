@@ -2,6 +2,7 @@ package edu.uco.cs.v2c.desktop.linux.command;
 
 import java.awt.Robot;
 import java.awt.AWTException;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 public class KeyboardRobot {
@@ -18,5 +19,33 @@ public class KeyboardRobot {
 		robot.delay(4000);
 		robot.delay(500);
 		robot.keyPress(KeyEvent.VK_WINDOWS);
+	}
+	public void leftMouseClick()
+	{
+	  robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+	  robot.delay(200);
+	  robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+	  robot.delay(200);
+	}
+	
+	public void type(int i)
+	{
+	  robot.delay(40);
+	  robot.keyPress(i);
+	  robot.keyRelease(i);
+	}
+  
+	public void type(String s)
+	{
+	  byte[] bytes = s.getBytes();
+	  for (byte b : bytes)
+	  {
+		int code = b;
+		// keycode only handles [A-Z] (which is ASCII decimal [65-90])
+		if (code > 96 && code < 123) code = code - 32;
+		robot.delay(40);
+		robot.keyPress(code);
+		robot.keyRelease(code);
+	  }
 	}
 }
