@@ -28,10 +28,12 @@ import edu.uco.cs.v2c.dispatcher.api.listener.CommandListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.ConfigUpdateListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.ConnectionCloseListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.ConnectionOpenListener;
+import edu.uco.cs.v2c.dispatcher.api.listener.HeartbeatListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.MessageListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.WebSocketErrorListener;
 import edu.uco.cs.v2c.dispatcher.api.payload.PayloadHandlingException;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.ErrorPayload;
+import edu.uco.cs.v2c.dispatcher.api.payload.incoming.HeartbeatPayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.InboundConfigUpdatePayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.IncomingPayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
@@ -49,6 +51,7 @@ public class DispatcherConnection extends WebSocketClient {
   private Set<ConfigUpdateListener> configUpdateListeners = new LinkedHashSet<>();
   private Set<ConnectionCloseListener> connectionCloseListeners = new LinkedHashSet<>();
   private Set<ConnectionOpenListener> connectionOpenListeners = new LinkedHashSet<>();
+  private Set<HeartbeatListener> heartbeatListeners = new LinkedHashSet<>();
   private Set<MessageListener> messageListeners = new LinkedHashSet<>();
   private Set<WebSocketErrorListener> errorListeners = new LinkedHashSet<>();
   private ExecutorService executor = null;
@@ -59,7 +62,8 @@ public class DispatcherConnection extends WebSocketClient {
     connectionCloseListeners,
     connectionOpenListeners,
     messageListeners,
-    errorListeners
+    errorListeners,
+    heartbeatListeners
   };
   
   /**
@@ -164,6 +168,21 @@ public class DispatcherConnection extends WebSocketClient {
             }
           }
         };
+        
+        break;
+      }
+      
+      case HEARTBEAT: {
+        HeartbeatPayload payload = new HeartbeatPayload(json);
+        runnable = new Runnable() {
+          @Override public void run() {
+            synchronized(heartbeatListeners) {
+              for(HeartbeatListener listener : heartbeatListeners)
+                listener.onHeartbeat(payload);
+            }
+          }
+        };
+        
         break;
       }
       
@@ -231,6 +250,11 @@ public class DispatcherConnection extends WebSocketClient {
       if(listener instanceof WebSocketErrorListener)
         synchronized(errorListeners) {
           errorListeners.add((WebSocketErrorListener)listener);
+        }
+      
+      if(listener instanceof HeartbeatListener)
+        synchronized(heartbeatListeners) {
+          heartbeatListeners.add((HeartbeatListener)listener);
         }
       
     }

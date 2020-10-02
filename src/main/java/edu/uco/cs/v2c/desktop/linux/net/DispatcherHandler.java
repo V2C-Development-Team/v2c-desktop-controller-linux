@@ -22,13 +22,16 @@ import edu.uco.cs.v2c.dispatcher.api.listener.CommandListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.ConfigUpdateListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.ConnectionCloseListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.ConnectionOpenListener;
+import edu.uco.cs.v2c.dispatcher.api.listener.HeartbeatListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.MessageListener;
 import edu.uco.cs.v2c.dispatcher.api.listener.WebSocketErrorListener;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.ErrorPayload;
+import edu.uco.cs.v2c.dispatcher.api.payload.incoming.HeartbeatPayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.InboundConfigUpdatePayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteMessagePayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.outgoing.DeregisterListenerPayload;
+import edu.uco.cs.v2c.dispatcher.api.payload.outgoing.HeartbeatAckPayload;
 import edu.uco.cs.v2c.dispatcher.api.payload.outgoing.RegisterListenerPayload;
 
 /**
@@ -40,6 +43,7 @@ public class DispatcherHandler implements CommandListener,
                                           ConfigUpdateListener,
                                           ConnectionCloseListener,
                                           ConnectionOpenListener,
+                                          HeartbeatListener,
                                           MessageListener,
                                           WebSocketErrorListener,
                                           Runnable {
@@ -122,6 +126,18 @@ public class DispatcherHandler implements CommandListener,
         throwable.getMessage() == null ? throwable.getClass().getName()
             : throwable.getMessage()));
     if(thread != null) thread.interrupt();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override public void onHeartbeat(HeartbeatPayload payload) {
+    Logger.onDebug(LOG_LABEL, String.format("Detected heartbeat: %1$s", payload.toString()));
+    HeartbeatAckPayload ack = new HeartbeatAckPayload()
+        .setApp("desktop") // TODO don't hardcode this in the future probably
+        .setKey(payload.getKey())
+        .setTimestamp(System.currentTimeMillis());
+    connection.get().send(ack);
   }
 
   /**
