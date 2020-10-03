@@ -1,1 +1,50 @@
-{"commands":[{"Description":"Plays a chord when you say play chord","Execute":"play -q -n synth 2 pluck C5","Activation Phrase":"play chord","Command Name":"Play Sound"},{"Description":"Launches firefox browser when you say launch browser","Execute":"launch browser","Activation Phrase":"firefox","Command Name":"Launch Browser"},{"Description":"Launches glances in a terminal","Execute":"glances","Activation Phrase":"glances","Command Name":"Glances"}]}
+{
+    "action": "UPDATE_CONFIGURATION",
+    "config": {
+        "commands": [
+            {
+                "name": "Play Sound",
+                "description": "Plays a chord when you say play chord",
+                "executables": [
+                    "play -q -n synth 2 pluck C5"
+                ],
+                "directive": "play chord",
+                "enable": true
+            },
+            {
+                "name": "Launch Browser",
+                "description": "Launches firefox browser when you say launch browser",
+                "executables": [
+                    "launch browser"
+                ],
+                "directive": "firefox",
+                "enable": true
+            },
+            {
+                "name": "Glances",
+                "description": "Launches glances in a terminal",
+                "executables": [
+                    "glances"
+                ],
+                "directive": "glances",
+                "enable": true
+            }
+        ],
+        "macros": [
+            {
+                "name": "The name of the macro",
+                "description": "The description of the macro",
+                "keypresses": [
+                    "CTRL_DOWN",
+                    "ALT_DOWN",
+                    "DEL_DOWN",
+                    "CTRL_UP",
+                    "ALT_UP",
+                    "DEL_UP"
+                ],
+                "directive": "task manager"
+            }
+        ]
+    },
+    "app": "desktop"
+}

@@ -1,6 +1,6 @@
 package edu.uco.cs.v2c.desktop.linux.command;
 
-import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
+import edu.uco.cs.v2c.desktop.linux.model.ConfigurationData;
 import edu.uco.cs.v2c.dispatcher.api.listener.CommandListener;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
 
@@ -10,34 +10,32 @@ import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
  * @author Caleb L. Power
  */
 public class CommandParser implements CommandListener {
-  
-  private CommandDataTable commandDataTable = null;
-  
+
+  private ConfigurationData configurationData;
+
   /**
    * Instantiates the command parser.
    * 
    * @param commandDataTable the command data table
    */
-  public CommandParser(CommandDataTable commandDataTable) {
-    this.commandDataTable = commandDataTable;
+  public CommandParser(ConfigurationData configurationData){
+    this.configurationData = configurationData;
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override public void onIncomingCommand(RouteCommandPayload payload) {
-    System.out.printf("COMMAND for %1$s = %2$s", payload.getRecipient(), payload.getCommand());
-    String targetCommand = payload.getCommand().toString();
-    for(int i = 0; i < commandDataTable.getRowCount(); i++) {
-      String[] row = (String[])commandDataTable.getRowAt(i);
-      if(row[2].equalsIgnoreCase(targetCommand)) {
-        targetCommand = row[3];
-        break;
-      }
-    }
-    TerminalCommandJava tempCommand = new TerminalCommandJava();
-		tempCommand.ExecuteCommand(targetCommand);
-    
-  }
+  @Override
+  public void onIncomingCommand(RouteCommandPayload payload) {
+    String targetCommand = payload.getCommand();
+    System.out.println(targetCommand);
 
+    // check recipient 
+    
+    // find targetCommand in configurationdata
+
+    TerminalCommandJava tempCommand = new TerminalCommandJava();
+    tempCommand.ExecuteCommand(targetCommand);
+
+  }
 }
