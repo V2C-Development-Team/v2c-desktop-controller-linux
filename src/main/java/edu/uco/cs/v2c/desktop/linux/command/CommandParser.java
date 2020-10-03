@@ -1,6 +1,8 @@
 package edu.uco.cs.v2c.desktop.linux.command;
 
-import edu.uco.cs.v2c.desktop.linux.model.CommandDataTable;
+import edu.uco.cs.v2c.desktop.linux.model.Command;
+import edu.uco.cs.v2c.desktop.linux.model.ConfigurationData;
+import edu.uco.cs.v2c.desktop.linux.model.Macro;
 import edu.uco.cs.v2c.dispatcher.api.listener.CommandListener;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
 
@@ -10,34 +12,42 @@ import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
  * @author Caleb L. Power
  */
 public class CommandParser implements CommandListener {
-  
-  private CommandDataTable commandDataTable = null;
-  
+  private ConfigurationData configurationData;
+  private static final String DESKTOP_VAR = "desktop";
+
   /**
    * Instantiates the command parser.
    * 
-   * @param commandDataTable the command data table
+   * @param configurationData the configurationData model
    */
-  public CommandParser(CommandDataTable commandDataTable) {
-    this.commandDataTable = commandDataTable;
+  public CommandParser(ConfigurationData configurationData) {
+    this.configurationData = configurationData;
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override public void onIncomingCommand(RouteCommandPayload payload) {
-    System.out.printf("COMMAND for %1$s = %2$s", payload.getRecipient(), payload.getCommand());
-    String targetCommand = payload.getCommand().toString();
-    for(int i = 0; i < commandDataTable.getRowCount(); i++) {
-      String[] row = (String[])commandDataTable.getRowAt(i);
-      if(row[2].equalsIgnoreCase(targetCommand)) {
-        targetCommand = row[3];
-        break;
-      }
-    }
-    TerminalCommandJava tempCommand = new TerminalCommandJava();
-		tempCommand.ExecuteCommand(targetCommand);
-    
-  }
+  @Override
+  public void onIncomingCommand(RouteCommandPayload payload) {
+    TerminalCommandJava terminal = new TerminalCommandJava();
+    String targetCommand = payload.getCommand();
 
+    if (payload.getRecipient().equals(DESKTOP_VAR)) {
+      Command foundCommand = configurationData.findCommand(targetCommand);
+      Macro foundMacro = configurationData.findMacro(targetCommand);
+
+      if (foundCommand != null) {
+        foundCommand.execute();
+      } else if (foundMacro != null) {
+        foundMacro.execute();
+      } else {
+        System.out.println("command/macro not found");
+        System.out.println("trying to execute anyway");
+        terminal.ExecuteCommand(targetCommand);
+      }
+    } else {
+      System.out.println("=========recipient is not desktop========");
+    }
+
+  }
 }

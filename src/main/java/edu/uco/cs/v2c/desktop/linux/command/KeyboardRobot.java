@@ -19,7 +19,27 @@ public class KeyboardRobot {
 		robot.delay(4000);
 		robot.delay(500);
 		robot.keyPress(KeyEvent.VK_WINDOWS);
+		robot.keyPress(KeyEvent.VK_RIGHT);
+		robot.keyRelease(KeyEvent.VK_WINDOWS);
+		robot.keyRelease(KeyEvent.VK_RIGHT);
 	}
+
+	public void snapWindowLeft() {
+		robot.keyPress(KeyEvent.VK_WINDOWS);
+		robot.keyPress(KeyEvent.VK_LEFT);
+		robot.delay(500);
+		robot.keyRelease(KeyEvent.VK_WINDOWS);
+		robot.keyRelease(KeyEvent.VK_LEFT);
+	}
+
+	public void snapWindowRight() {
+		robot.keyPress(KeyEvent.VK_WINDOWS);
+		robot.keyPress(KeyEvent.VK_RIGHT);
+		robot.delay(500);
+		robot.keyRelease(KeyEvent.VK_WINDOWS);
+		robot.keyRelease(KeyEvent.VK_RIGHT);
+	}
+
 	public void leftMouseClick()
 	{
 	  robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
