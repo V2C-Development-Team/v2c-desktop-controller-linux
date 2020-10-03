@@ -10,18 +10,20 @@ public class ConfigParser implements ConfigUpdateListener {
     private static final String COMMANDS_VAR = "commands";
     private static final String MACROS_VAR = "macros";
 
-    public ConfigParser(ConfigurationData configurationData){
+    public ConfigParser(ConfigurationData configurationData) {
         this.configurationData = configurationData;
     }
 
-    @Override public void onConfigUpdate(InboundConfigUpdatePayload payload) {
-        System.out.println("CONFIG UPDATING");
+    @Override
+    public void onConfigUpdate(InboundConfigUpdatePayload payload) {
         if (payload.getApp().equals(DESKTOP_VAR)) {
-            configurationData.setCommands(payload.getConfig().getJSONArray(COMMANDS_VAR));
-            configurationData.setMacros(payload.getConfig().getJSONArray(MACROS_VAR));
+            configurationData.updateCommands(payload.getConfig().getJSONArray(COMMANDS_VAR));
+            configurationData.updateMacros(payload.getConfig().getJSONArray(MACROS_VAR));
         } else {
             System.out.println("============NOT DESKTOP==============");
         }
+        configurationData.printCommands();
+        configurationData.printMacros();
     }
 
 }

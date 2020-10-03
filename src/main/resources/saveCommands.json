@@ -28,6 +28,16 @@
                 ],
                 "directive": "glances",
                 "enable": true
+            },
+            {
+                "name": "test",
+                "description": "run a few commands",
+                "executables": [
+                    "ping google.com",
+                    "ping facebook.com"
+                ],
+                "directive": "test",
+                "enable": true
             }
         ],
         "macros": [
@@ -42,7 +52,24 @@
                     "ALT_UP",
                     "DEL_UP"
                 ],
-                "directive": "task manager"
+                "directive": "task manager",
+                "enable": true
+            },
+            {
+                "name": "Window Snap Left",
+                "description": "Snap active window to the left",
+                "keypresses": [
+                    ""
+                ],
+                "directive": "window left",
+                "enable": true
+            },
+            {
+                "name": "Window Snap Right",
+                "description": "Snap active window to the right",
+                "keypresses": [],
+                "directive": "window right",
+                "enable": true
             }
         ]
     },
