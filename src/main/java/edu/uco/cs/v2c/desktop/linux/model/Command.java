@@ -50,8 +50,9 @@ public class Command {
     }
 
     public void execute() {
+        TerminalCommandJava terminal;
         for (int i = 0; i < executables.length; i++) {
-            TerminalCommandJava terminal = new TerminalCommandJava();
+            terminal = new TerminalCommandJava();
             terminal.ExecuteCommand(executables[i]);
         }
     }

@@ -37,8 +37,10 @@ public class CommandParser implements CommandListener {
       Macro foundMacro = configurationData.findMacro(targetCommand);
 
       if (foundCommand != null) {
+        System.out.println("command found");
         foundCommand.execute();
       } else if (foundMacro != null) {
+        System.out.println("macro found");
         foundMacro.execute();
       } else {
         System.out.println("command/macro not found");

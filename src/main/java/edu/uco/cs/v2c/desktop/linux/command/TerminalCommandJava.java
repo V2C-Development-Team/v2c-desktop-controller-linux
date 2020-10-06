@@ -23,11 +23,12 @@ public class TerminalCommandJava {
 		rte = new TerminalCommandJava();
 		try {
 			Process proc = rt.exec(s);
+			proc.waitFor();
 			errorReported = rte.getStreamWrapper(proc.getErrorStream(), "ERROR");
 			outputMessage = rte.getStreamWrapper(proc.getInputStream(), "OUTPUT");
 			errorReported.start();
 			outputMessage.start();
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
