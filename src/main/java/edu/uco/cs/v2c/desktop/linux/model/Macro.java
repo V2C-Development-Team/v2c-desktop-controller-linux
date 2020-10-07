@@ -1,5 +1,7 @@
 package edu.uco.cs.v2c.desktop.linux.model;
 
+import edu.uco.cs.v2c.desktop.linux.command.KeyboardRobot;
+
 public class Macro {
     String name;
     String description;
@@ -49,6 +51,15 @@ public class Macro {
 
     public void execute() {
         // TODO execute the macro
-        System.out.println("TRYING TO EXECUTE MACRO " + name);
+        System.out.println("TRYING TO EXECUTE MACRO " + name);    
+        // TODO convert Macro to keypress
+
+        try {
+            KeyboardRobot keyboardCommandRobot = new KeyboardRobot();
+            keyboardCommandRobot.snapWindowLeft();
+        } catch (Exception e) {
+            //TODO: handle exception
+        } 
+        
     }
 }
