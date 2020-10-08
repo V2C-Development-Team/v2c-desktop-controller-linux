@@ -56,7 +56,8 @@ public class Macro {
 
         try {
             KeyboardRobot keyboardCommandRobot = new KeyboardRobot();
-            keyboardCommandRobot.snapWindowLeft();
+            //keyboardCommandRobot.snapWindowLeft();
+            keyboardCommandRobot.LoadKeyEvent();
         } catch (Exception e) {
             //TODO: handle exception
         } 

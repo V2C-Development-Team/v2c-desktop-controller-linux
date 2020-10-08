@@ -4,10 +4,49 @@ import java.awt.Robot;
 import java.awt.AWTException;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
+import java.lang.reflect.Field;
 
 public class KeyboardRobot {
 
 	private Robot robot;
+
+	Map<String,Integer> keyMap = new HashMap<String,Integer>();
+
+	
+
+	public void LoadKeyEvent(){
+		try {
+			System.out.println("Loading key events");
+			Field[] fields = KeyEvent.class.getFields();
+			System.out.println(fields.length);
+			for (int i = 0; i < fields.length; i++) {
+				
+				String fieldName = fields[i].getName();
+				
+				if (fieldName.startsWith("VK")) {
+					int fieldValue = fields[i].getInt(null);
+					System.out.println("Key: " + fieldName + " " + fieldValue + " " + i);
+
+					keyMap.put(fieldName,fieldValue);
+				}
+
+					// Add the code and name values to the maps
+				//	keyCodesToNames.put(keyCode, keyName);
+					//keyNamesToCodes.put(keyName,keyCode);
+				//}
+			}
+
+			
+			System.out.println("Ended");
+			System.out.println(keyMap);
+		} catch (Exception e) {
+			System.out.println(e);
+			//TODO: handle exception
+		}
+		
+	}
 
 	public KeyboardRobot() throws AWTException {
 		this.robot = new Robot();
