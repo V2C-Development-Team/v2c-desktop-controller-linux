@@ -55,9 +55,16 @@ public class Macro {
         // TODO convert Macro to keypress
 
         try {
-            KeyboardRobot keyboardCommandRobot = new KeyboardRobot();
-            //keyboardCommandRobot.snapWindowLeft();
-            keyboardCommandRobot.LoadKeyEvent();
+            KeyboardRobot keyboardCommandRobot;
+            keyboardCommandRobot = new KeyboardRobot();
+            for (int i = 0; i < keypresses.length; i++) {
+                keyboardCommandRobot.pressString(keypresses[i]);
+            }
+            keyboardCommandRobot.standardDelay();
+            for (int k = 0; k < keypresses.length; k++) {
+                keyboardCommandRobot.releaseString(keypresses[k]);
+            }
+
         } catch (Exception e) {
             //TODO: handle exception
         } 

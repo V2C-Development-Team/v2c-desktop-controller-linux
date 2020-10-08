@@ -6,15 +6,25 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+
 import java.lang.reflect.Field;
 
 public class KeyboardRobot {
 
 	private Robot robot;
-
+	private int standardDelayPeriod;
+	private static final int STANDARD_DEAY = 500;
 	Map<String,Integer> keyMap = new HashMap<String,Integer>();
 
 	
+	public int keyStringToInt(String keyString){
+		int keyInt = this.keyMap.get(keyString);
+		if( keyInt != 0 ) {
+			return keyInt;
+		} else {
+			return -1;
+		}
+	}
 
 	public void LoadKeyEvent(){
 		try {
@@ -32,13 +42,11 @@ public class KeyboardRobot {
 					keyMap.put(fieldName,fieldValue);
 				}
 
-					// Add the code and name values to the maps
-				//	keyCodesToNames.put(keyCode, keyName);
-					//keyNamesToCodes.put(keyName,keyCode);
-				//}
+				// Add the code and name values to the maps
+				// keyCodesToNames.put(keyCode, keyName);
+				// keyNamesToCodes.put(keyName,keyCode);
 			}
 
-			
 			System.out.println("Ended");
 			System.out.println(keyMap);
 		} catch (Exception e) {
@@ -49,18 +57,23 @@ public class KeyboardRobot {
 	}
 
 	public KeyboardRobot() throws AWTException {
+		this.LoadKeyEvent();
 		this.robot = new Robot();
 		robot.setAutoDelay(40);
 		robot.setAutoWaitForIdle(true);
+		this.setStandardDelayPeriod(STANDARD_DEAY);
 	}
 
-	public void typeTest() {
-		robot.delay(4000);
+	public void pressString(String keyToPress) {
+		int keyToPressInt = this.keyStringToInt(keyToPress);
+		robot.keyPress(keyToPressInt);
 		robot.delay(500);
-		robot.keyPress(KeyEvent.VK_WINDOWS);
-		robot.keyPress(KeyEvent.VK_RIGHT);
-		robot.keyRelease(KeyEvent.VK_WINDOWS);
-		robot.keyRelease(KeyEvent.VK_RIGHT);
+		robot.keyRelease(keyToPressInt);
+	}
+
+	public void releaseString(String keyToPress) {
+		int keyToPressInt = this.keyStringToInt(keyToPress);
+		robot.keyRelease(keyToPressInt);
 	}
 
 	public void snapWindowLeft() {
@@ -106,5 +119,16 @@ public class KeyboardRobot {
 		robot.keyPress(code);
 		robot.keyRelease(code);
 	  }
+	}
+	public void standardDelay(){
+		robot.delay(this.getStandardDelayPeriod());
+	}
+
+	public int getStandardDelayPeriod() {
+		return standardDelayPeriod;
+	}
+
+	public void setStandardDelayPeriod(int standardDelayPeriod) {
+		this.standardDelayPeriod = standardDelayPeriod;
 	}
 }
