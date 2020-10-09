@@ -3,5 +3,6 @@
 .gradle
 .project
 .settings
+.metadata/
 bin/
 build/
