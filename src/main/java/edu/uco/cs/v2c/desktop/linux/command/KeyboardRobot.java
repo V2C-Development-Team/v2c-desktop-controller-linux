@@ -67,8 +67,6 @@ public class KeyboardRobot {
 	public void pressString(String keyToPress) {
 		int keyToPressInt = this.keyStringToInt(keyToPress);
 		robot.keyPress(keyToPressInt);
-		robot.delay(500);
-		robot.keyRelease(keyToPressInt);
 	}
 
 	public void releaseString(String keyToPress) {
