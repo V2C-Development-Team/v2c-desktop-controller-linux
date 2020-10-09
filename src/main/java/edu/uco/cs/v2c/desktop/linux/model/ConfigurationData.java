@@ -1,0 +1,134 @@
+package edu.uco.cs.v2c.desktop.linux.model;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class ConfigurationData {
+    private Command[] commands;
+    private Macro[] macros;
+
+    public Command findCommand(String targetCommand) {
+        Command foundCommand = null;
+
+        for (int i = 0; i < commands.length; i++) {
+            if (commands[i].getName().equals(targetCommand)) {
+                foundCommand = commands[i];
+            }
+        }
+        // check if enabled is true
+        // else return null
+
+        return foundCommand;
+    }
+
+    public Macro findMacro(String targetMacro) {
+        Macro foundMacro = null;
+
+        for (int i = 0; i < macros.length; i++) {
+            if (macros[i].getName().equals(targetMacro)) {
+                foundMacro = macros[i];
+            }
+        }
+
+        return foundMacro;
+    }
+
+    public void printCommands() {
+        System.out.println("==================CURRENT COMMANDS DATA=================");
+        for (int i = 0; i < commands.length; i++) {
+            System.out.println(commands[i].getName());
+            System.out.println(commands[i].getDescription());
+            for (int e = 0; e < commands[i].getExecutables().length; e++) {
+                System.out.println(commands[i].getExecutables()[e]);
+            }
+            System.out.println(commands[i].getDirective());
+            System.out.println(commands[i].getEnabled());
+            System.out.println("-----------------------------------------------------");
+        }
+        System.out.println("==================CURRENT COMMANDS DATA=================");
+    }
+
+    public void printMacros() {
+        System.out.println("==================CURRENT MACROS DATA=================");
+        for (int i = 0; i < macros.length; i++) {
+            System.out.println(macros[i].getName());
+            System.out.println(macros[i].getDescription());
+            for (int e = 0; e < macros[i].getKeypresses().length; e++) {
+                System.out.println(macros[i].getKeypresses()[e]);
+            }
+            System.out.println(macros[i].getDirective());
+            System.out.println(macros[i].getEnabled());
+            System.out.println("-----------------------------------------------------");
+        }
+        System.out.println("==================CURRENT MACROS DATA=================");
+    }
+
+    public void updateCommands(JSONArray commands) {
+        int commandsLength = commands.length();
+        Command[] temporaryCommandArray = new Command[commandsLength];
+
+        for (int i = 0; i < commandsLength; i++) {
+            JSONObject currentCommand = commands.getJSONObject(i);
+            temporaryCommandArray[i] = new Command();
+            String name = currentCommand.getString("name");
+            temporaryCommandArray[i].setName(name);
+            String description = currentCommand.getString("description");
+            temporaryCommandArray[i].setDescription(description);
+            JSONArray executables = currentCommand.getJSONArray("executables");
+            String[] executablesString = new String[executables.length()];
+            for (int e = 0; e < executables.length(); e++) {
+                executablesString[e] = executables.getString(e);
+            }
+            temporaryCommandArray[i].setExecutables(executablesString);
+            String directive = currentCommand.getString("directive");
+            temporaryCommandArray[i].setDirective(directive);
+            Boolean enabled = currentCommand.getBoolean("enable");
+            temporaryCommandArray[i].setEnabled(enabled);
+        }
+
+        setCommands(temporaryCommandArray);
+    }
+
+    public void updateMacros(JSONArray macros) {
+        int macrosLength = macros.length();
+        Macro[] temporaryMacroArray = new Macro[macrosLength];
+
+        for (int i = 0; i < macrosLength; i++) {
+            JSONObject currentMacro = macros.getJSONObject(i);
+            temporaryMacroArray[i] = new Macro();
+            String name = currentMacro.getString("name");
+            temporaryMacroArray[i].setName(name);
+            String description = currentMacro.getString("description");
+            temporaryMacroArray[i].setDescription(description);
+            JSONArray keypresses = currentMacro.getJSONArray("keypresses");
+            String[] keypressesString = new String[keypresses.length()];
+            for (int e = 0; e < keypresses.length(); e++) {
+                keypressesString[e] = keypresses.getString(e);
+            }
+            temporaryMacroArray[i].setKeypresses(keypressesString);
+            String directive = currentMacro.getString("directive");
+            temporaryMacroArray[i].setDirective(directive);
+            Boolean enabled = currentMacro.getBoolean("enable");
+            temporaryMacroArray[i].setEnabled(enabled);
+        }
+
+        setMacros(temporaryMacroArray);
+    }
+
+    public Command[] getCommands() {
+        return commands;
+    }
+
+    public void setCommands(Command[] commands) {
+        this.commands = commands;
+    }
+
+    public Macro[] getMacros() {
+        return macros;
+    }
+
+    public void setMacros(Macro[] macros) {
+        this.macros = macros;
+    }
+
+}
