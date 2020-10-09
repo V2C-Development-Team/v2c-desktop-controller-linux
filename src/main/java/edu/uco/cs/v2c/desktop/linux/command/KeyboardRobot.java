@@ -37,7 +37,7 @@ public class KeyboardRobot {
 				
 				if (fieldName.startsWith("VK")) {
 					int fieldValue = fields[i].getInt(null);
-					System.out.println("Key: " + fieldName + " " + fieldValue + " " + i);
+					// System.out.println("Key: " + fieldName + " " + fieldValue + " " + i);
 
 					keyMap.put(fieldName,fieldValue);
 				}
@@ -47,8 +47,6 @@ public class KeyboardRobot {
 				// keyNamesToCodes.put(keyName,keyCode);
 			}
 
-			System.out.println("Ended");
-			System.out.println(keyMap);
 		} catch (Exception e) {
 			System.out.println(e);
 			//TODO: handle exception
@@ -66,12 +64,20 @@ public class KeyboardRobot {
 
 	public void pressString(String keyToPress) {
 		int keyToPressInt = this.keyStringToInt(keyToPress);
-		robot.keyPress(keyToPressInt);
+		if (keyToPressInt != -1) {
+			robot.keyPress(keyToPressInt);
+		} else {
+			System.out.println("Command string not found");
+		}	
 	}
 
 	public void releaseString(String keyToPress) {
 		int keyToPressInt = this.keyStringToInt(keyToPress);
-		robot.keyRelease(keyToPressInt);
+		if (keyToPressInt != -1) {
+			robot.keyRelease(keyToPressInt);
+		} else {
+			System.out.println("Command string not found");
+		}	
 	}
 
 	public void snapWindowLeft() {

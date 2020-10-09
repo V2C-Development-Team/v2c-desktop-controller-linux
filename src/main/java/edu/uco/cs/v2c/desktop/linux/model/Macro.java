@@ -50,10 +50,7 @@ public class Macro {
     }
 
     public void execute() {
-        // TODO execute the macro
         System.out.println("TRYING TO EXECUTE MACRO " + name);    
-        // TODO convert Macro to keypress
-
         try {
             KeyboardRobot keyboardCommandRobot;
             keyboardCommandRobot = new KeyboardRobot();
