@@ -14,11 +14,12 @@ public class KeyboardRobot {
 	private Robot robot;
 	private int standardDelayPeriod;
 	private static final int STANDARD_DEAY = 500;
-	Map<String,Integer> keyMap = new HashMap<String,Integer>();
+	Map<String,Integer> keyCodeToInt = new HashMap<String,Integer>();
+	Map<Integer, String> intToKeyCode = new HashMap<Integer,String>();
 
 	
 	public int keyStringToInt(String keyString){
-		int keyInt = this.keyMap.get(keyString);
+		int keyInt = this.keyCodeToInt.get(keyString);
 		if( keyInt != 0 ) {
 			return keyInt;
 		} else {
@@ -26,11 +27,21 @@ public class KeyboardRobot {
 		}
 	}
 
+	public String intToKeyString(int keyInt){
+		String keyString = this.intToKeyCode.get(keyInt);
+		if (keyString == "") {
+			return "Not Found";
+		} else {
+			return keyString;
+		}
+		
+	}
+
 	public void LoadKeyEvent(){
 		try {
 			System.out.println("Loading key events");
 			Field[] fields = KeyEvent.class.getFields();
-			System.out.println(fields.length);
+			// System.out.println(fields.length);
 			for (int i = 0; i < fields.length; i++) {
 				
 				String fieldName = fields[i].getName();
@@ -39,13 +50,13 @@ public class KeyboardRobot {
 					int fieldValue = fields[i].getInt(null);
 					// System.out.println("Key: " + fieldName + " " + fieldValue + " " + i);
 
-					keyMap.put(fieldName,fieldValue);
+					keyCodeToInt.put(fieldName,fieldValue);
+					intToKeyCode.put(fieldValue, fieldName);
 				}
 
-				// Add the code and name values to the maps
-				// keyCodesToNames.put(keyCode, keyName);
-				// keyNamesToCodes.put(keyName,keyCode);
 			}
+			System.out.println("Loaded key events");
+
 
 		} catch (Exception e) {
 			System.out.println(e);
@@ -134,5 +145,13 @@ public class KeyboardRobot {
 
 	public void setStandardDelayPeriod(int standardDelayPeriod) {
 		this.standardDelayPeriod = standardDelayPeriod;
+	}
+
+	public Map<Integer, String> getIntToKeyCode() {
+		return intToKeyCode;
+	}
+
+	public void setIntToKeyCode(Map<Integer, String> intToKeyCode) {
+		this.intToKeyCode = intToKeyCode;
 	}
 }
