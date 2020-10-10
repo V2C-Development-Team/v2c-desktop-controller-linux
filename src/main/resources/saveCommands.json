@@ -1,69 +1,171 @@
 {
-    "action": "UPDATE_CONFIGURATION",
-    "config": {
-      "commands": [
-        {
-          "name": "Play Sound",
-          "description": "Plays a chord when you say play chord",
-          "executables": [
-            "play -q -n synth 2 pluck C5"
-          ],
-          "directive": "play chord",
-          "enable": true
-        },
-        {
-          "name": "Launch Browser",
-          "description": "Launches firefox browser when you say launch browser",
-          "executables": [
-            "launch browser"
-          ],
-          "directive": "firefox",
-          "enable": true
-        },
-        {
-          "name": "Glances",
-          "description": "Launches glances in a terminal",
-          "executables": [
-            "glances"
-          ],
-          "directive": "glances",
-          "enable": true
-        }
-      ],
-      "macros": [
-        {
-          "name": "The name of the macro",
-          "description": "The description of the macro",
-          "keypresses": [
-            "CTRL_DOWN",
-            "ALT_DOWN",
-            "DEL_DOWN",
-            "CTRL_UP",
-            "ALT_UP",
-            "DEL_UP"
-          ],
-          "directive": "task manager",
-          "enable": true
-        },
-        {
-          "name": "Window Snap Left",
-          "description": "Snap active window to the left",
-          "keypresses": [
-            ""
-          ],
-          "directive": "window left",
-          "enable": true
-        },
-        {
-          "name": "Window Snap Right",
-          "description": "Snap active window to the right",
-          "keypresses": [
-            ""
-          ],
-          "directive": "window right",
-          "enable": true
-        }
-      ]
-    },
-    "app": "desktop"
-  }
+  "action": "UPDATE_CONFIGURATION",
+  "config": {
+    "commands": [
+      {
+        "name": "Play Sound",
+        "description": "Plays a chord when you say play chord",
+        "executables": [
+          "play -q -n synth 2 pluck C5"
+        ],
+        "directive": "play chord",
+        "enabled": true
+      },
+      {
+        "name": "Launch Browser",
+        "description": "Launches firefox browser when you say launch browser",
+        "executables": [
+          "launch browser"
+        ],
+        "directive": "firefox",
+        "enabled": true
+      },
+      {
+        "name": "Glances",
+        "description": "Launches glances in a terminal",
+        "executables": [
+          "glances"
+        ],
+        "directive": "glances",
+        "enabled": true
+      }
+    ],
+    "macros": [
+      {
+        "name": "The name of the macro",
+        "description": "The description of the macro",
+        "keypresses": [
+          "CTRL_DOWN",
+          "ALT_DOWN",
+          "DEL_DOWN",
+          "CTRL_UP",
+          "ALT_UP",
+          "DEL_UP"
+        ],
+        "directive": "task manager",
+        "enabled": true
+      },
+      {
+        "name": "Window Snap Left",
+        "description": "Snap active window to the left",
+        "keypresses": [
+          "VK_WINDOWS",
+          "VK_LEFT"
+        ],
+        "directive": "window left",
+        "enabled": true
+      },
+      {
+        "name": "Window Snap Right",
+        "description": "Snap active window to the right",
+        "keypresses": [
+          "VK_WINDOWS",
+          "VK_RIGHT"
+        ],
+        "directive": "window right",
+        "enabled": true
+      },
+      {
+        "name": "Window Snap Top",
+        "description": "Snap active window to the top",
+        "keypresses": [
+          "VK_WINDOWS",
+          "VK_UP"
+        ],
+        "directive": "window top",
+        "enabled": true
+      },
+      {
+        "name": "Window Snap Bottom",
+        "description": "Snap active window to the bottom",
+        "keypresses": [
+          "VK_WINDOWS",
+          "VK_DOWN"
+        ],
+        "directive": "window bottom",
+        "enabled": true
+      },
+      {
+        "name": "Scroll Up",
+        "description": "Scroll up an active window",
+        "keypresses": [
+          "VK_PAGE_UP"
+        ],
+        "directive": "page up",
+        "enabled": true
+      },
+      {
+        "name": "Scroll Down",
+        "description": "Scroll down an active window",
+        "keypresses": [
+          "VK_PAGE_DOWN"
+        ],
+        "directive": "page down",
+        "enabled": true
+      },
+      {
+        "name": "Print Fox Jump",
+        "description": "Prints the quick brown fox jumps over the lazy dog",
+        "keypresses": [
+          "VK_T",
+          "VK_H",
+          "VK_E",
+          "VK_SPACE",
+          "VK_Q",
+          "VK_U",
+          "VK_I",
+          "VK_C",
+          "VK_K",
+          "VK_SPACE",
+          "VK_B",
+          "VK_R",
+          "VK_O",
+          "VK_W",
+          "VK_N",
+          "VK_SPACE",
+          "VK_F",
+          "VK_O",
+          "VK_X",
+          "VK_SPACE",
+          "VK_J",
+          "VK_U",
+          "VK_M",
+          "VK_P",
+          "VK_S",
+          "VK_SPACE",
+          "VK_O",
+          "VK_V",
+          "VK_E",
+          "VK_R",
+          "VK_SPACE",
+          "VK_T",
+          "VK_H",
+          "VK_E",
+          "VK_SPACE",
+          "VK_L",
+          "VK_A",
+          "VK_Z",
+          "VK_Y",
+          "VK_SPACE",
+          "VK_D",
+          "VK_O",
+          "VK_G",
+          "VK_PAGE_UP"
+        ],
+        "directive": "print fox jump",
+        "enabled": true
+      },
+      {
+        "name": "Close Window",
+        "description": "Close the active window",
+        "keypresses": [
+          "VK_ALT",
+          "VK_F4"
+        ],
+        "directive": "close",
+        "enabled": true
+      }
+    ]
+  },
+  "app": "desktop"
+}
