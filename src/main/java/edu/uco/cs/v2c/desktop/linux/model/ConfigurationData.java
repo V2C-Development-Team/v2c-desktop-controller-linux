@@ -82,7 +82,7 @@ public class ConfigurationData {
             temporaryCommandArray[i].setExecutables(executablesString);
             String directive = currentCommand.getString("directive");
             temporaryCommandArray[i].setDirective(directive);
-            Boolean enabled = currentCommand.getBoolean("enable");
+            Boolean enabled = currentCommand.getBoolean("enabled");
             temporaryCommandArray[i].setEnabled(enabled);
         }
 
@@ -108,7 +108,7 @@ public class ConfigurationData {
             temporaryMacroArray[i].setKeypresses(keypressesString);
             String directive = currentMacro.getString("directive");
             temporaryMacroArray[i].setDirective(directive);
-            Boolean enabled = currentMacro.getBoolean("enable");
+            Boolean enabled = currentMacro.getBoolean("enabled");
             temporaryMacroArray[i].setEnabled(enabled);
         }
 
