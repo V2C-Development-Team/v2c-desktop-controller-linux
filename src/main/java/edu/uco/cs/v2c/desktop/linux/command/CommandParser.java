@@ -29,7 +29,7 @@ public class CommandParser implements CommandListener {
    */
   @Override
   public void onIncomingCommand(RouteCommandPayload payload) {
-    TerminalCommandJava terminal = new TerminalCommandJava();
+    // TerminalCommandJava terminal = new TerminalCommandJava();
     String targetCommand = payload.getCommand();
 
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
@@ -44,8 +44,8 @@ public class CommandParser implements CommandListener {
         foundMacro.execute();
       } else {
         System.out.println("command/macro not found");
-        System.out.println("trying to execute anyway");
-        terminal.ExecuteCommand(targetCommand);
+        // System.out.println("trying to execute anyway");
+        // terminal.ExecuteCommand(targetCommand);
       }
     } else {
       System.out.println("=========recipient is not desktop========");
