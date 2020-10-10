@@ -11,7 +11,7 @@ public class ConfigurationData {
         Command foundCommand = null;
 
         for (int i = 0; i < commands.length; i++) {
-            if (commands[i].getName().equals(targetCommand)) {
+            if (commands[i].getDirective().equals(targetCommand)) {
                 foundCommand = commands[i];
             }
         }
@@ -25,7 +25,7 @@ public class ConfigurationData {
         Macro foundMacro = null;
 
         for (int i = 0; i < macros.length; i++) {
-            if (macros[i].getName().equals(targetMacro)) {
+            if (macros[i].getDirective().equals(targetMacro)) {
                 foundMacro = macros[i];
             }
         }
@@ -36,13 +36,14 @@ public class ConfigurationData {
     public void printCommands() {
         System.out.println("==================CURRENT COMMANDS DATA=================");
         for (int i = 0; i < commands.length; i++) {
-            System.out.println(commands[i].getName());
-            System.out.println(commands[i].getDescription());
+            System.out.println("== Name: " + commands[i].getName());
+            System.out.println("== Description: " + commands[i].getDescription());
+            System.out.println("== Executables: ");
             for (int e = 0; e < commands[i].getExecutables().length; e++) {
-                System.out.println(commands[i].getExecutables()[e]);
+                System.out.println("== \"" + commands[i].getExecutables()[e] + "\"");
             }
-            System.out.println(commands[i].getDirective());
-            System.out.println(commands[i].getEnabled());
+            System.out.println("== Directive: " + commands[i].getDirective());
+            System.out.println("== Enabled: " + commands[i].getEnabled());
             System.out.println("-----------------------------------------------------");
         }
         System.out.println("==================CURRENT COMMANDS DATA=================");
@@ -51,13 +52,14 @@ public class ConfigurationData {
     public void printMacros() {
         System.out.println("==================CURRENT MACROS DATA=================");
         for (int i = 0; i < macros.length; i++) {
-            System.out.println(macros[i].getName());
-            System.out.println(macros[i].getDescription());
+            System.out.println("== Name: " + macros[i].getName());
+            System.out.println("== Description: " + macros[i].getDescription());
+            System.out.println("== Keypresses: ");
             for (int e = 0; e < macros[i].getKeypresses().length; e++) {
-                System.out.println(macros[i].getKeypresses()[e]);
+                System.out.println("== \"" + macros[i].getKeypresses()[e] + "\"");
             }
-            System.out.println(macros[i].getDirective());
-            System.out.println(macros[i].getEnabled());
+            System.out.println("== Directive: " + macros[i].getDirective());
+            System.out.println("== Enabled: " + macros[i].getEnabled());
             System.out.println("-----------------------------------------------------");
         }
         System.out.println("==================CURRENT MACROS DATA=================");
@@ -80,7 +82,7 @@ public class ConfigurationData {
                 executablesString[e] = executables.getString(e);
             }
             temporaryCommandArray[i].setExecutables(executablesString);
-            String directive = currentCommand.getString("directive");
+            String directive = currentCommand.getString("directive").toLowerCase();
             temporaryCommandArray[i].setDirective(directive);
             Boolean enabled = currentCommand.getBoolean("enabled");
             temporaryCommandArray[i].setEnabled(enabled);
@@ -106,7 +108,7 @@ public class ConfigurationData {
                 keypressesString[e] = keypresses.getString(e);
             }
             temporaryMacroArray[i].setKeypresses(keypressesString);
-            String directive = currentMacro.getString("directive");
+            String directive = currentMacro.getString("directive").toLowerCase();
             temporaryMacroArray[i].setDirective(directive);
             Boolean enabled = currentMacro.getBoolean("enabled");
             temporaryMacroArray[i].setEnabled(enabled);
