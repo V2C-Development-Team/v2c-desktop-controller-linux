@@ -30,26 +30,37 @@ public class CommandParser implements CommandListener {
   @Override
   public void onIncomingCommand(RouteCommandPayload payload) {
     // TerminalCommandJava terminal = new TerminalCommandJava();
+
     String targetCommand = payload.getCommand();
 
-    if (payload.getRecipient().equals(DESKTOP_VAR)) {
-      Command foundCommand = configurationData.findCommand(targetCommand);
-      Macro foundMacro = configurationData.findMacro(targetCommand);
 
-      if (foundCommand != null && foundCommand.getEnabled()) {
-        System.out.println("command found");
-        foundCommand.execute();
-      } else if (foundMacro != null && foundMacro.getEnabled()) {
-        System.out.println("macro found");
-        foundMacro.execute();
-      } else {
-        System.out.println("command/macro not found");
-        // System.out.println("trying to execute anyway");
-        // terminal.ExecuteCommand(targetCommand);
-      }
+    if (payload.getRecipient().equals(DESKTOP_VAR)) {
+      String[] tokenCommands = targetCommand.split(" ");
+      for (String s: tokenCommands) {
+        Command foundCommand = configurationData.findCommand(s);
+        Macro foundMacro = configurationData.findMacro(s);
+        if (foundCommand != null && foundCommand.getEnabled()) {
+          System.out.println("command found");
+          foundCommand.execute();
+        } else if (foundMacro != null && foundMacro.getEnabled()) {
+          System.out.println("macro found");
+          foundMacro.execute();
+        } else {
+          System.out.println("command/macro not found");
+          // System.out.println("trying to execute anyway");
+          // terminal.ExecuteCommand(targetCommand);
+        }
+      }      
     } else {
       System.out.println("=========recipient is not desktop========");
     }
+
+    
+
+   
+    
+
+    
 
   }
 }
