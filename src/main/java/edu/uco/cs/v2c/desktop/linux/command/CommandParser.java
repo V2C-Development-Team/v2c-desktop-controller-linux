@@ -1,8 +1,7 @@
 package edu.uco.cs.v2c.desktop.linux.command;
 
-import edu.uco.cs.v2c.desktop.linux.model.Command;
 import edu.uco.cs.v2c.desktop.linux.model.ConfigurationData;
-import edu.uco.cs.v2c.desktop.linux.model.Macro;
+import edu.uco.cs.v2c.desktop.linux.model.RecognitionStateContext;
 import edu.uco.cs.v2c.dispatcher.api.listener.CommandListener;
 import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
 
@@ -12,6 +11,7 @@ import edu.uco.cs.v2c.dispatcher.api.payload.incoming.RouteCommandPayload;
  * @author Caleb L. Power
  */
 public class CommandParser implements CommandListener {
+  private RecognitionStateContext currentRecognitionState;
   private ConfigurationData configurationData;
   private static final String DESKTOP_VAR = "desktop";
 
@@ -20,7 +20,8 @@ public class CommandParser implements CommandListener {
    * 
    * @param configurationData the configurationData model
    */
-  public CommandParser(ConfigurationData configurationData) {
+  public CommandParser(RecognitionStateContext currentRecognitionState, ConfigurationData configurationData) {
+    this.currentRecognitionState = currentRecognitionState;
     this.configurationData = configurationData;
   }
 
@@ -32,35 +33,24 @@ public class CommandParser implements CommandListener {
     // TerminalCommandJava terminal = new TerminalCommandJava();
 
     String targetCommand = payload.getCommand();
-
-
+    
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
-      String[] tokenCommands = targetCommand.split(" ");
-      for (String s: tokenCommands) {
-        Command foundCommand = configurationData.findCommand(s);
-        Macro foundMacro = configurationData.findMacro(s);
-        if (foundCommand != null && foundCommand.getEnabled()) {
-          System.out.println("command found");
-          foundCommand.execute();
-        } else if (foundMacro != null && foundMacro.getEnabled()) {
-          System.out.println("macro found");
-          foundMacro.execute();
-        } else {
-          System.out.println("command/macro not found");
-          // System.out.println("trying to execute anyway");
-          // terminal.ExecuteCommand(targetCommand);
-        }
-      }      
+      currentRecognitionState.execute(targetCommand, configurationData);
+
+      // check for state command
+      // if state command then change state
+      // else continue doing below stuff
+
+      // if(currentState == command)
+      // command
+
+      // if it is spelling
+
+      // if it is stream
+
     } else {
       System.out.println("=========recipient is not desktop========");
     }
-
-    
-
-   
-    
-
-    
 
   }
 }

@@ -13,7 +13,7 @@ public class KeyboardRobot {
 
 	private Robot robot;
 	private int standardDelayPeriod;
-	private static final int STANDARD_DEAY = 500;
+	private static final int STANDARD_DEAY = 100;
 	Map<String,Integer> keyCodeToInt = new HashMap<String,Integer>();
 	Map<Integer, String> intToKeyCode = new HashMap<Integer,String>();
 
