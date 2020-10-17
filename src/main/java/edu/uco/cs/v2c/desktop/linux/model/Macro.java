@@ -57,7 +57,7 @@ public class Macro {
             for (int i = 0; i < keypresses.length; i++) {
                 keyboardCommandRobot.pressString(keypresses[i]);
             }
-            keyboardCommandRobot.standardDelay();
+            // keyboardCommandRobot.standardDelay();
             for (int k = 0; k < keypresses.length; k++) {
                 keyboardCommandRobot.releaseString(keypresses[k]);
             }
