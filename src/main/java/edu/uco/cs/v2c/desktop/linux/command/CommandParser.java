@@ -33,7 +33,7 @@ public class CommandParser implements CommandListener {
     String targetCommand = payload.getCommand();
 
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
-      Command foundCommand = configurationData.findCommand(targetCommand);
+      Command foundCommand = configurationData.findCommand(targetCommand); 
       Macro foundMacro = configurationData.findMacro(targetCommand);
 
       if (foundCommand != null && foundCommand.getEnabled()) {
