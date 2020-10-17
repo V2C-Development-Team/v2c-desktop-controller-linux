@@ -35,6 +35,7 @@ public class CommandParser implements CommandListener {
     String targetCommand = payload.getCommand();
     
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
+
       currentRecognitionState.execute(targetCommand, configurationData);
 
       // check for state command

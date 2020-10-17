@@ -4,8 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ConfigurationData {
-    private Command[] commands;
-    private Macro[] macros;
+	private Command[] commands = new Command[0];
+	private Macro[] macros = new Macro[0]; //Jon- Updated this so it doesn't throw NPE when looking for the arrays
+	
 
     public Command findCommand(String targetCommand) {
         Command foundCommand = null;
