@@ -15,13 +15,17 @@
  */
 package edu.uco.cs.v2c.desktop.linux.dfaparser;
 
+import java.awt.AWTException;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map.Entry;
 
 import edu.uco.cs.v2c.desktop.linux.dfaparser.State;
+import edu.uco.cs.v2c.desktop.linux.command.KeyboardRobot;
 import edu.uco.cs.v2c.desktop.linux.dfaparser.SchemaReader;
 import edu.uco.cs.v2c.desktop.linux.dfaparser.StateListener;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
+import edu.uco.cs.v2c.desktop.linux.model.NewKeypress;
 
 
 /**
@@ -81,6 +85,8 @@ public class Hypervisor implements StateListener {
   
   @Override public void onTerminalState(State state) {
     Logger.onDebug(LOG_LABEL, "--- Hit terminal state!");
+    boolean shift = false; //bool for typing characters
+    
     
     //if we have action key.
     if(machine.getRegister().containsKey("action")) {
@@ -100,14 +106,25 @@ public class Hypervisor implements StateListener {
       		else {//we found the keypress entries tag
       		     
       			//while there are keypressess left in the list
-
+      				
       			while(machine.getRegister().get("keypress").size() > 0) {
       				try {
+      					KeyboardRobot robot = new KeyboardRobot();
       					String keypress = machine.getRegister().get("keypress").remove(0);
       					Logger.onDebug(LOG_LABEL, "type " + keypress);
-      					//#TODO check against map
+      					NewKeypress pressToSend = NewKeypress.getKeypress(keypress); //check the ENUM to see if the token = directive for key
       					//#TODO if shift. throw caps flag and next letter caps
-      					//#TODO send off to robot  				
+      					
+      					if(pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
+      						shift = true;
+      						robot.holdKey(KeyEvent.VK_SHIFT);
+      						continue;
+      					}
+      					robot.holdKey(pressToSend.getKeyEvent());
+      					robot.releaseKey(pressToSend.getKeyEvent());
+      					if(shift == true) {
+      						robot.releaseKey(KeyEvent.VK_SHIFT);
+      					}
       					
       				}
       				catch (Exception e) {
@@ -134,30 +151,36 @@ public class Hypervisor implements StateListener {
       			//try to get the number and direction
       			try {
       				String direction = machine.getRegister().get("direction").get(0);
+      				KeyboardRobot robot = new KeyboardRobot();
+      				//String number = machine.getRegister().get("number").get(0);
       				int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
-      			
+      			    int pressToSend = -1;
       				// we have the number and direction strings, match the direction to the appropriate one.
       				switch(direction.toLowerCase()) {
       				case "up":
       					foundDirection = true;
-      					//#TODO set keypress to up
+      					pressToSend = KeyEvent.VK_UP;
       					break;
       				case "down":
       					foundDirection = true;
-      					//#TODO set keypress to down
+      					pressToSend = KeyEvent.VK_DOWN;
       					break;
       				case "left":
           				foundDirection = true;
-          				//#TODO set keypress to left
+          				pressToSend = KeyEvent.VK_LEFT;
           				break;
       				case "right":
       					foundDirection = true;
-      					//#TODO set keypress to right
+      					pressToSend = KeyEvent.VK_RIGHT;
       					break;
       				}
-      				if(foundDirection) {
+      				if(foundDirection && !(pressToSend == -1)) {
       					Logger.onDebug(LOG_LABEL, "move " + parsedNumber + " spaces " + direction);
-      					//#TODO send off to robot
+      					for(int i = 0; i < parsedNumber; i++) {
+      						robot.holdKey(pressToSend);
+      						robot.releaseKey(pressToSend);
+      					}
+      						
       				}else Logger.onError(LOG_LABEL, "Observer found an invalid direction");
       		}
       		catch(Exception e) {
@@ -179,9 +202,14 @@ public class Hypervisor implements StateListener {
       		else {// we found the number tag
       			
       			try { //try to parse it, so we can avoid a horrible switch statement;
+      				KeyboardRobot robot = new KeyboardRobot();
       				int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
       				 Logger.onDebug(LOG_LABEL, "backspace " + parsedNumber + " spaces");
-      				 //#TODO, send off to robot.
+      				 for(int i = 0; i < parsedNumber; i++) {
+      					 robot.holdKey(KeyEvent.VK_BACK_SPACE);
+      					robot.releaseKey(KeyEvent.VK_BACK_SPACE);
+      					
+      				 }
       			}
       			
       			catch(Exception e) { //parse failed
