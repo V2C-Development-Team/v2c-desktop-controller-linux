@@ -11,11 +11,12 @@ import java.lang.reflect.Field;
 
 public class KeyboardRobot {
 
-	private Robot robot;
+	private static Robot robot;
 	private int standardDelayPeriod;
 	private static final int STANDARD_DEAY = 100;
 	Map<String, Integer> keyCodeToInt = new HashMap<String, Integer>();
 	Map<Integer, String> intToKeyCode = new HashMap<Integer, String>();
+	private static int windowNextCounter = 48;
 
 	public int keyStringToInt(String keyString) {
 		int keyInt = this.keyCodeToInt.get(keyString);
@@ -129,6 +130,44 @@ public class KeyboardRobot {
 			robot.keyPress(code);
 			robot.keyRelease(code);
 		}
+	}
+	
+	public static void switchTextbox() {
+		KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.type(KeyEvent.VK_TAB);
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			System.out.println("failed to switch text box");
+		}
+		
+		
+	}
+	
+	public static void windowNext() {
+		KeyboardRobot robot;
+		try {
+		if(windowNextCounter == 57) {
+			windowNextCounter = 48;
+		}
+		robot = new KeyboardRobot();
+		robot.holdKey(KeyEvent.VK_WINDOWS);
+		robot.type(windowNextCounter);
+		robot.releaseKey(KeyEvent.VK_WINDOWS);
+		windowNextCounter++;
+		}
+		catch (AWTException e) {
+			System.out.println("failed to switch windows");
+		}
+	}
+	
+	public  void holdKey(int i) {
+		robot.keyPress(i);
+	}
+	
+	public  void releaseKey(int i) {
+		robot.keyRelease(i);
 	}
 
 	public void typeNoDelay(int i) {

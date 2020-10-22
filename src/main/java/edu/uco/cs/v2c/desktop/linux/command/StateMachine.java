@@ -13,6 +13,8 @@ public class StateMachine implements Runnable {
 	private static final String MODE_SWITCH_KEYWORD = "alteration";
 	private static final String TYPING_MODE = "typing";
 	private static final String COMMAND_MODE = "command";
+	private static final String TAB = "tab";
+	private static final String WINDOW_NEXT = "window";
 	private static final String LOG_LABEL = "DESKTOP_STATEMACHINE";
 	private ConfigurationData configurationData = null;
 	
@@ -86,8 +88,15 @@ public class StateMachine implements Runnable {
 					else if(token.equalsIgnoreCase(COMMAND_MODE)) {
 						flush();
 						myState.setState(new CommandState());
-						
 					}
+					else if(token.equalsIgnoreCase(TAB)) {
+							KeyboardRobot.switchTextbox();
+						}
+					else if(token.equalsIgnoreCase(WINDOW_NEXT)) {
+						 KeyboardRobot.windowNext();
+					}
+						
+					
 					else {
 						confirmedBuffer.add(MODE_SWITCH_KEYWORD);
 						confirmedBuffer.add(token);
