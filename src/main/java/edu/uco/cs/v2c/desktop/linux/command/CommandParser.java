@@ -14,6 +14,7 @@ public class CommandParser implements CommandListener {
   private RecognitionStateContext currentRecognitionState;
   private ConfigurationData configurationData;
   private static final String DESKTOP_VAR = "desktop";
+  private static StateMachine stateMachine;
 
   /**
    * Instantiates the command parser.
@@ -23,6 +24,7 @@ public class CommandParser implements CommandListener {
   public CommandParser(RecognitionStateContext currentRecognitionState, ConfigurationData configurationData) {
     this.currentRecognitionState = currentRecognitionState;
     this.configurationData = configurationData;
+    stateMachine = StateMachine.build(configurationData,currentRecognitionState);
   }
 
   /**
@@ -34,9 +36,13 @@ public class CommandParser implements CommandListener {
 
     String targetCommand = payload.getCommand();
     
+    
+    
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
 
-      currentRecognitionState.execute(targetCommand, configurationData);
+    	stateMachine.queue(targetCommand);
+    	
+      //currentRecognitionState.execute(targetCommand, configurationData);
 
       // check for state command
       // if state command then change state

@@ -1,0 +1,95 @@
+{
+	"0": {
+		"transitions": {
+			"please": 0,
+			"type": 1,
+			"move": 5,
+			"backspace": 9
+		},
+		"state": "restart"
+	},
+	"1": {
+		"transitions": {
+			"the": 2,
+			"*": 4
+		},
+		"set": {
+			"key": "action",
+			"value": "type"
+		}
+	},
+	"2": {
+		"transitions": {
+			"letters": 3
+		}
+	},
+	"3": {
+		"transitions": {
+			"*": 4
+		}
+	},
+	"4": {
+		"transitions": {
+			"done": 12,
+			"cancel": 0,
+			"*": 4
+		},
+		"save": "keypress"
+	},
+	"5": {
+		"transitions": {
+			"*": 6
+		},
+		"set": {
+			"key": "action",
+			"value": "move"
+		}
+	},
+	"6": {
+		"transitions": {
+			"spaces": 7,
+			"*": 8
+		},
+		"save": "number"
+	},
+	"7": {
+		"transitions": {
+			"*": 8
+		}
+	},
+	"8": {
+		"transitions": {
+			"done": 12,
+			"cancel": 0
+		},
+		"save": "direction"
+	},
+	"9": {
+		"transitions": {
+			"*": 10
+		},
+		"set": {
+			"key": "action",
+			"value": "backspace"
+		}
+	},
+	"10": {
+		"transitions": {
+			"times": 11,
+			"spaces": 11,
+			"done": 12,
+			"cancel": 0
+		},
+		"save": "number"
+	},
+	"11": {
+		"transitions": {
+			"done": 12,
+			"cancel": 0
+		}
+	},
+	"12": {
+		"state": "done"
+
+	}
+}
