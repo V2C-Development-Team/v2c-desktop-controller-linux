@@ -29,6 +29,7 @@ import edu.uco.cs.v2c.desktop.linux.command.CommandParser;
 import edu.uco.cs.v2c.desktop.linux.command.ConfigParser;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.model.ConfigurationData;
+import edu.uco.cs.v2c.desktop.linux.model.RecognitionStateContext;
 import edu.uco.cs.v2c.desktop.linux.net.DispatcherHandler;
 
 /**
@@ -45,6 +46,7 @@ public class V2CLinuxDesktopController {
   private static final String LOG_LABEL = "CONTROLLER";
   private static final String ENABLE_UI_PARAM_LONG = "enable-ui";
   private static final String ENABLE_UI_PARAM_SHORT = "u";
+  private static RecognitionStateContext currentRecognitionState;
 
   /**
    * Entry-point.
@@ -82,9 +84,11 @@ public class V2CLinuxDesktopController {
       // KeyboardRobot keyboardCommandRobot = new KeyboardRobot();
       // keyboardCommandRobot.typeTest();
 
+      currentRecognitionState = new RecognitionStateContext();
+      
       // Dispatcher
       ConfigurationData configurationData = new ConfigurationData();
-      CommandParser commandParser = new CommandParser(configurationData);
+      CommandParser commandParser = new CommandParser(currentRecognitionState,configurationData);
       ConfigParser configParser = new ConfigParser(configurationData);
       DispatcherHandler handler = DispatcherHandler.build(destination);
       handler.registerCommandListener(commandParser, configParser);
