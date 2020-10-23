@@ -162,6 +162,34 @@ public class KeyboardRobot {
 		}
 	}
 	
+	public static void maximize() {
+		KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_WINDOWS);
+			robot.type(KeyEvent.VK_UP);
+			robot.releaseKey(KeyEvent.VK_WINDOWS);
+			
+		}
+		catch(AWTException e) {
+			System.out.println("failed to maximize window");
+		}
+	}
+	
+	public static void minimize() {
+		KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_WINDOWS);
+			robot.type(KeyEvent.VK_DOWN);
+			robot.releaseKey(KeyEvent.VK_WINDOWS);
+			
+		}
+		catch(AWTException e) {
+			System.out.println("failed to minimize window");
+		}
+	}
+	
 	public  void holdKey(int i) {
 		robot.keyPress(i);
 	}

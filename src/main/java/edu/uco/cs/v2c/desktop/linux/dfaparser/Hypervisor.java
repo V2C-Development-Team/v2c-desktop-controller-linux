@@ -113,17 +113,18 @@ public class Hypervisor implements StateListener {
       					String keypress = machine.getRegister().get("keypress").remove(0);
       					Logger.onDebug(LOG_LABEL, "type " + keypress);
       					NewKeypress pressToSend = NewKeypress.getKeypress(keypress); //check the ENUM to see if the token = directive for key
-      					//#TODO if shift. throw caps flag and next letter caps
       					
-      					if(pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
+      					
+      					if(pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) { //if shift flag that next letter is shifted
       						shift = true;
-      						robot.holdKey(KeyEvent.VK_SHIFT);
+      						robot.holdKey(KeyEvent.VK_SHIFT); //hold shift till next comes in
       						continue;
       					}
-      					robot.holdKey(pressToSend.getKeyEvent());
-      					robot.releaseKey(pressToSend.getKeyEvent());
+      					robot.holdKey(pressToSend.getKeyEvent()); //press key
+      					robot.releaseKey(pressToSend.getKeyEvent()); 
       					if(shift == true) {
-      						robot.releaseKey(KeyEvent.VK_SHIFT);
+      						robot.releaseKey(KeyEvent.VK_SHIFT); //if shift, unshift after
+      						shift = false;
       					}
       					
       				}
@@ -174,7 +175,7 @@ public class Hypervisor implements StateListener {
       					pressToSend = KeyEvent.VK_RIGHT;
       					break;
       				}
-      				if(foundDirection && !(pressToSend == -1)) {
+      				if(foundDirection && !(pressToSend == -1)) { //execute in robot
       					Logger.onDebug(LOG_LABEL, "move " + parsedNumber + " spaces " + direction);
       					for(int i = 0; i < parsedNumber; i++) {
       						robot.holdKey(pressToSend);
@@ -205,7 +206,7 @@ public class Hypervisor implements StateListener {
       				KeyboardRobot robot = new KeyboardRobot();
       				int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
       				 Logger.onDebug(LOG_LABEL, "backspace " + parsedNumber + " spaces");
-      				 for(int i = 0; i < parsedNumber; i++) {
+      				 for(int i = 0; i < parsedNumber; i++) { //backspace the correct number of times
       					 robot.holdKey(KeyEvent.VK_BACK_SPACE);
       					robot.releaseKey(KeyEvent.VK_BACK_SPACE);
       					

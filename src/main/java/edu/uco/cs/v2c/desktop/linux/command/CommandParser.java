@@ -36,24 +36,9 @@ public class CommandParser implements CommandListener {
 
     String targetCommand = payload.getCommand();
     
-    
-    
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
 
-    	stateMachine.queue(targetCommand);
-    	
-      //currentRecognitionState.execute(targetCommand, configurationData);
-
-      // check for state command
-      // if state command then change state
-      // else continue doing below stuff
-
-      // if(currentState == command)
-      // command
-
-      // if it is spelling
-
-      // if it is stream
+    	stateMachine.queue(targetCommand);//handles what mode we are in and passes to the appropriate execute()
 
     } else {
       System.out.println("=========recipient is not desktop========");

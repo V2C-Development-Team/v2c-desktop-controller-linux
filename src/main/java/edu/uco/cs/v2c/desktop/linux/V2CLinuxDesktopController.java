@@ -85,7 +85,6 @@ public class V2CLinuxDesktopController {
       // keyboardCommandRobot.typeTest();
 
       currentRecognitionState = new RecognitionStateContext();
-      currentRecognitionState.goToNextRecognitionState();
       
       // Dispatcher
       ConfigurationData configurationData = new ConfigurationData();

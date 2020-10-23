@@ -15,6 +15,8 @@ public class StateMachine implements Runnable {
 	private static final String COMMAND_MODE = "command";
 	private static final String TAB = "tab";
 	private static final String WINDOW_NEXT = "window";
+	private static final String MAXIMIZE = "maximize";
+	private static final String MINIMIZE = "minimize";
 	private static final String LOG_LABEL = "DESKTOP_STATEMACHINE";
 	private ConfigurationData configurationData = null;
 	
@@ -95,7 +97,13 @@ public class StateMachine implements Runnable {
 					else if(token.equalsIgnoreCase(WINDOW_NEXT)) {
 						 KeyboardRobot.windowNext();
 					}
-						
+					else if(token.equalsIgnoreCase(MAXIMIZE)) {
+						 KeyboardRobot.maximize();
+					}
+					else if(token.equalsIgnoreCase(MINIMIZE)) {
+						 KeyboardRobot.minimize();
+					}
+								
 					
 					else {
 						confirmedBuffer.add(MODE_SWITCH_KEYWORD);
