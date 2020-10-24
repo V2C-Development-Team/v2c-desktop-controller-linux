@@ -7,7 +7,7 @@ public class RecognitionStateContext {
         this.currentState = new CommandState();
     }
 
-    public void getState(){
+    public void getState() {
         System.out.println(currentState);
     }
 

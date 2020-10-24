@@ -19,18 +19,18 @@ public class StateMachine implements Runnable {
 	private static final String MINIMIZE = "minimize";
 	private static final String LOG_LABEL = "DESKTOP_STATEMACHINE";
 	private ConfigurationData configurationData = null;
-	
-	private LinkedList<String> incomingBuffer = new LinkedList<>();//buffer for incoming commands
-	private LinkedList<String> confirmedBuffer = new LinkedList<>();// buffer for building targeted outgoing commands to modules
+
+	private LinkedList<String> incomingBuffer = new LinkedList<>();// buffer for incoming commands
+	private LinkedList<String> confirmedBuffer = new LinkedList<>();// buffer for building targeted outgoing commands to
+																	// modules
 	private Thread thread = null;
 	private RecognitionStateContext myState;
-	
+
 	private StateMachine(ConfigurationData config) {
 		this.configurationData = config;
-		
+
 	}
-	
-	
+
 	public static StateMachine build(ConfigurationData config, RecognitionStateContext context) {
 		StateMachine machine = new StateMachine(config);
 		machine.thread = new Thread(machine);
@@ -39,88 +39,83 @@ public class StateMachine implements Runnable {
 		machine.myState = context;
 		return machine;
 	}
-	
+
 	private void flush() {
-		if(confirmedBuffer.isEmpty()) return; //if buffer is empty it is flushed
-		
-		StringBuilder stringBuilder = new StringBuilder();//a builder for building the outgoing command
+		if (confirmedBuffer.isEmpty())
+			return; // if buffer is empty it is flushed
+
+		StringBuilder stringBuilder = new StringBuilder();// a builder for building the outgoing command
 		do
 			stringBuilder.append(confirmedBuffer.remove(0)).append(' ');
-		while(!confirmedBuffer.isEmpty());// while buffer !empty append token at 0, and a space
+		while (!confirmedBuffer.isEmpty());// while buffer !empty append token at 0, and a space
 		// this is essentially reconstructing our tokenized string
-		if(stringBuilder.toString()!= null)
-		myState.execute(stringBuilder.toString().stripTrailing(), configurationData);
+		if (stringBuilder.toString() != null)
+			myState.execute(stringBuilder.toString().stripTrailing(), configurationData);
 	}
-	
+
 	public void queue(String input) {
-		String tokens [] = input.split("\\s+"); // take the input string and tokenize it, 1-* spaces are token delimiters.
-		synchronized(incomingBuffer) {
-			for(String token: tokens)
+		String tokens[] = input.split("\\s+"); // take the input string and tokenize it, 1-* spaces are token
+												// delimiters.
+		synchronized (incomingBuffer) {
+			for (String token : tokens)
 				incomingBuffer.add(token.toLowerCase());// synchonized for multithreading, add each token to buffer
-			incomingBuffer.notifyAll(); //notify all waiting threads of update.
+			incomingBuffer.notifyAll(); // notify all waiting threads of update.
 		}
 	}
-	
+
 	public void kill() {
 		thread.interrupt();
 	}
-
 
 	@Override
 	public void run() {
 		try {
 			boolean foundModeSwitch = false;
-			
-			while(!thread.isInterrupted()) {
+
+			while (!thread.isInterrupted()) {
 				String token = null;
-				
-				synchronized(incomingBuffer){
-					while(incomingBuffer.isEmpty()) {
+
+				synchronized (incomingBuffer) {
+					while (incomingBuffer.isEmpty()) {
 						flush();
 						incomingBuffer.wait();
 					}
 					token = incomingBuffer.remove(0);
 					incomingBuffer.notifyAll();
 				}
-				if(foundModeSwitch) {
-					if(token.equalsIgnoreCase(TYPING_MODE)) {
+				if (foundModeSwitch) {
+					if (token.equalsIgnoreCase(TYPING_MODE)) {
 						flush();
 						myState.setState(new TypingState());
-					}
-					else if(token.equalsIgnoreCase(COMMAND_MODE)) {
+					} else if (token.equalsIgnoreCase(COMMAND_MODE)) {
 						flush();
 						myState.setState(new CommandState());
+					} else if (token.equalsIgnoreCase(TAB)) {
+						KeyboardRobot.switchTextbox();
+					} else if (token.equalsIgnoreCase(WINDOW_NEXT)) {
+						KeyboardRobot.windowNext();
+					} else if (token.equalsIgnoreCase(MAXIMIZE)) {
+						KeyboardRobot.maximize();
+					} else if (token.equalsIgnoreCase(MINIMIZE)) {
+						KeyboardRobot.minimize();
 					}
-					else if(token.equalsIgnoreCase(TAB)) {
-							KeyboardRobot.switchTextbox();
-						}
-					else if(token.equalsIgnoreCase(WINDOW_NEXT)) {
-						 KeyboardRobot.windowNext();
-					}
-					else if(token.equalsIgnoreCase(MAXIMIZE)) {
-						 KeyboardRobot.maximize();
-					}
-					else if(token.equalsIgnoreCase(MINIMIZE)) {
-						 KeyboardRobot.minimize();
-					}
-								
-					
+
 					else {
 						confirmedBuffer.add(MODE_SWITCH_KEYWORD);
 						confirmedBuffer.add(token);
 					}
-					
+
 					foundModeSwitch = false;
-					
-				}else if(token.equalsIgnoreCase(MODE_SWITCH_KEYWORD)) {
+
+				} else if (token.equalsIgnoreCase(MODE_SWITCH_KEYWORD)) {
 					foundModeSwitch = true;
-				}else confirmedBuffer.add(token);
-				
+				} else
+					confirmedBuffer.add(token);
+
 			}
+		} catch (InterruptedException e) {
 		}
-		catch(InterruptedException e) {}
-		
+
 	}
-	
-	
+
 }
