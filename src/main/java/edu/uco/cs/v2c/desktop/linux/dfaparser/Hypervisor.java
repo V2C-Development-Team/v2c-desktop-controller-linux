@@ -26,6 +26,7 @@ import edu.uco.cs.v2c.desktop.linux.dfaparser.SchemaReader;
 import edu.uco.cs.v2c.desktop.linux.dfaparser.StateListener;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.model.NewKeypress;
+import edu.uco.cs.v2c.desktop.linux.model.StreamStateKeypress;
 
 /**
  * The faux hypervisor implementation to manage the machine and the values that
@@ -40,6 +41,7 @@ public class Hypervisor implements StateListener {
 
 	private Bootloader bootloader = null;
 	private Machine machine = null;
+	private boolean streamMode = false;
 
 	/**
 	 * Instantiates the hypervisor.
@@ -111,17 +113,32 @@ public class Hypervisor implements StateListener {
 							KeyboardRobot robot = new KeyboardRobot();
 							String keypress = machine.getRegister().get("keypress").remove(0);
 							Logger.onDebug(LOG_LABEL, "type " + keypress);
-							NewKeypress pressToSend = NewKeypress.getKeypress(keypress); // check the ENUM to see if the
-																							// token = directive for key
-
-							if (pressToSend == null) {
-								robot.type(keypress);
-								robot.holdKey(KeyEvent.VK_SPACE);
-								robot.releaseKey(KeyEvent.VK_SPACE);
+							// check the ENUM to see if the token = directive for key
+							if (streamMode) {
+								StreamStateKeypress pressToSend = StreamStateKeypress.getKeypress(keypress);
+								// type whole words not in NewKeypress only if we are in streamMode
+								if (pressToSend == null) {
+									robot.type(keypress);
+									robot.holdKey(KeyEvent.VK_SPACE);
+									robot.releaseKey(KeyEvent.VK_SPACE);
+								} else {
+									// if shift flag that next letter is shifted
+									if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
+										shift = true;
+										robot.holdKey(KeyEvent.VK_SHIFT); // hold shift till next comes in
+										continue;
+									}
+									robot.holdKey(pressToSend.getKeyEvent()); // press key
+									robot.releaseKey(pressToSend.getKeyEvent());
+									if (shift == true) {
+										robot.releaseKey(KeyEvent.VK_SHIFT); // if shift, unshift after
+										shift = false;
+									}
+								}
 							} else {
-								if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) { // if shift flag that next letter
-																						// is
-									// shifted
+								NewKeypress pressToSend = NewKeypress.getKeypress(keypress);
+								// if shift flag that next letter is shifted
+								if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
 									shift = true;
 									robot.holdKey(KeyEvent.VK_SHIFT); // hold shift till next comes in
 									continue;
@@ -133,6 +150,7 @@ public class Hypervisor implements StateListener {
 									shift = false;
 								}
 							}
+
 						} catch (Exception e) {
 							Logger.onError(LOG_LABEL, "Observer cannot parse the keypress(es).");
 
@@ -240,4 +258,11 @@ public class Hypervisor implements StateListener {
 		machine.loadState(bootloader.getInitialState());
 	}
 
+	public boolean isStreamMode() {
+		return streamMode;
+	}
+
+	public void setStreamMode(boolean streamMode) {
+		this.streamMode = streamMode;
+	}
 }

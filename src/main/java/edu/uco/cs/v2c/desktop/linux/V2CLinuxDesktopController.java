@@ -46,7 +46,7 @@ public class V2CLinuxDesktopController {
   private static final String LOG_LABEL = "CONTROLLER";
   private static final String ENABLE_UI_PARAM_LONG = "enable-ui";
   private static final String ENABLE_UI_PARAM_SHORT = "u";
-  private static RecognitionStateContext currentRecognitionState;
+  public static RecognitionStateContext currentRecognitionState;
 
   /**
    * Entry-point.

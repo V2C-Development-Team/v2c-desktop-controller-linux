@@ -7,12 +7,14 @@ import edu.uco.cs.v2c.desktop.linux.model.CommandState;
 import edu.uco.cs.v2c.desktop.linux.model.ConfigurationData;
 import edu.uco.cs.v2c.desktop.linux.model.RecognitionState;
 import edu.uco.cs.v2c.desktop.linux.model.RecognitionStateContext;
+import edu.uco.cs.v2c.desktop.linux.model.StreamState;
 import edu.uco.cs.v2c.desktop.linux.model.TypingState;
 
 public class StateMachine implements Runnable {
 	private static final String MODE_SWITCH_KEYWORD = "alteration";
 	private static final String TYPING_MODE = "typing";
 	private static final String COMMAND_MODE = "command";
+	private static final String STREAMING_MODE = "streaming";
 	private static final String TAB = "tab";
 	private static final String WINDOW_NEXT = "window";
 	private static final String MAXIMIZE = "maximize";
@@ -90,6 +92,9 @@ public class StateMachine implements Runnable {
 					} else if (token.equalsIgnoreCase(COMMAND_MODE)) {
 						flush();
 						myState.setState(new CommandState());
+					} else if (token.equalsIgnoreCase(STREAMING_MODE)) {
+						flush();
+						myState.setState(new StreamState());
 					} else if (token.equalsIgnoreCase(TAB)) {
 						KeyboardRobot.switchTextbox();
 					} else if (token.equalsIgnoreCase(WINDOW_NEXT)) {
