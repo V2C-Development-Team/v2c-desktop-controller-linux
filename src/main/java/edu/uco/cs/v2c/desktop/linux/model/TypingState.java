@@ -40,15 +40,4 @@ public class TypingState implements RecognitionState {
 		ctx.setState(state);
 	}
 
-	// nicks stub
-	/*
-	 * @Override public void execute(String commandText, ConfigurationData
-	 * configurationData) { String[] tokenMacros = commandText.split(" "); for
-	 * (String s : tokenMacros) { Macro foundMacro = configurationData.findMacro(s);
-	 * if (foundMacro != null && foundMacro.getEnabled()) {
-	 * System.out.println("macro found"); foundMacro.execute(); } else {
-	 * System.out.println("macro not found"); //
-	 * System.out.println("trying to execute anyway"); //
-	 * terminal.ExecuteCommand(targetCommand); } } }
-	 */
 }

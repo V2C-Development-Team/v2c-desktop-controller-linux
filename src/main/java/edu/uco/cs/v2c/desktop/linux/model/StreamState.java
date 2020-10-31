@@ -2,6 +2,7 @@ package edu.uco.cs.v2c.desktop.linux.model;
 
 import edu.uco.cs.v2c.desktop.linux.dfaparser.Hypervisor;
 import edu.uco.cs.v2c.desktop.linux.dfaparser.Machine;
+import edu.uco.cs.v2c.desktop.linux.dfaparser.StreamHypervisor;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 
 public class StreamState implements RecognitionState {
@@ -12,9 +13,9 @@ public class StreamState implements RecognitionState {
 	public StreamState() {
 		try {
 			machine = new Machine();
-			hypervisor = new Hypervisor();
+			hypervisor = new StreamHypervisor();
 			hypervisor.boot(machine);
-			hypervisor.setStreamMode(true);
+			
 			machine.registerStateListener(hypervisor);
 		} catch (Exception e) {
 			Logger.onError(LOG_LABEL, "failed to boot Parser");
@@ -23,14 +24,14 @@ public class StreamState implements RecognitionState {
 
 	@Override
 	public void goToNextRecognitionState(RecognitionStateContext ctx) {
-		hypervisor.setStreamMode(false);
+		
 		ctx.setState(new CommandState());
 		System.out.println("In Command State");
 	}
 
 	@Override
 	public void SetRecognitionState(RecognitionStateContext ctx, RecognitionState state) {
-		hypervisor.setStreamMode(false);
+		
 		ctx.setState(state);
 	}
 
