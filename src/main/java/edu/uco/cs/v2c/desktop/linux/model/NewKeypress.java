@@ -72,29 +72,24 @@ public enum NewKeypress {
     VK_TAB(KeyEvent.VK_TAB, "tab", "tap"),
     VK_UNDERSCORE(KeyEvent.VK_UNDERSCORE, "_", "underscore", "under score");
     
-    /*
-     * nonfunctional keyevents, at least on windows/qwerty
-     * 
-     * to type these keys please use a shift then the corresponding key
-     * 
-     * 
-     *  //   VK_BACK_QUOTE(), //#TODO come up with one word directive
-     *  //   VK_BRACELEFT(), //#TODO come up with one word directive
-        //   VK_BRACERIGHT(), //#TODO come up with one word directive
-             VK_COLON(KeyEvent.VK_COLON, ":", "colon", "full"),//#TODO nonfunc
-         *   VK_DOLLAR(KeyEvent.VK_DOLLAR, "$", "dollar", "cash"),//#TODO nonfunc
-         *   VK_EXCLAMATION_MARK(KeyEvent.VK_EXCLAMATION_MARK, "!", "exclamation", "bang"), //#TODO nonfunc
-             VK_GREATER(KeyEvent.VK_GREATER, ">", "greater", "great", "grater", "grate"),//#TODO nonfunc
-         *   VK_EURO_SIGN(KeyEvent.VK_EURO_SIGN, "euro"),//#TODO nonfunc
-             VK_LESS(KeyEvent.VK_LESS, "<", "lesser", "less"),//#TODO nonfunc
-     //      VK_LEFT_PARENTHESIS(), //#TODO come up with one word directive
-  //         VK_RIGHT_PARENTHESIS(),//#TODO come up with one word directive
-   *         VK_PLUS(KeyEvent.VK_PLUS, "+", "plus", "add"),//#TODO nonfunc
-             VK_MINUS(KeyEvent.VK_MINUS, "-", "minus", "subtract", "sub"),//#TODO nonfunc
-             VK_QUOTEDBL(KeyEvent.VK_QUOTEDBL, "\"", "rabbit", "double"),//#TODO nonfunc
-     * */
+    // nonfunctional keyevents, at least on windows/qwerty 
+    // to type these keys please use a shift then the corresponding key
     
-	
+    // VK_BACK_QUOTE(), //#TODO come up with one word directive
+    // VK_BRACELEFT(), //#TODO come up with one word directive
+    // VK_BRACERIGHT(), //#TODO come up with one word directive
+    // VK_COLON(KeyEvent.VK_COLON, ":", "colon", "full"),//#TODO nonfunc
+    // VK_DOLLAR(KeyEvent.VK_DOLLAR, "$", "dollar", "cash"),//#TODO nonfunc
+    // VK_EXCLAMATION_MARK(KeyEvent.VK_EXCLAMATION_MARK, "!", "exclamation", "bang"), //#TODO nonfunc
+    // VK_GREATER(KeyEvent.VK_GREATER, ">", "greater", "great", "grater", "grate"),//#TODO nonfunc
+    // VK_EURO_SIGN(KeyEvent.VK_EURO_SIGN, "euro"),//#TODO nonfunc
+    // VK_LESS(KeyEvent.VK_LESS, "<", "lesser", "less"),//#TODO nonfunc
+    // VK_LEFT_PARENTHESIS(), //#TODO come up with one word directive
+    // VK_RIGHT_PARENTHESIS(),//#TODO come up with one word directive
+    // VK_PLUS(KeyEvent.VK_PLUS, "+", "plus", "add"),//#TODO nonfunc
+    // VK_MINUS(KeyEvent.VK_MINUS, "-", "minus", "subtract", "sub"),//#TODO nonfunc
+    // VK_QUOTEDBL(KeyEvent.VK_QUOTEDBL, "\"", "rabbit", "double"),//#TODO nonfunc
+    
 	private static Map<String, NewKeypress> directiveMap = null;
 
 	private int keyEvent;

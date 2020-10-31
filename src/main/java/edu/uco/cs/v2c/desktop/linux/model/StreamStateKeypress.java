@@ -78,30 +78,29 @@ public enum StreamStateKeypress {
     VK_TAB(KeyEvent.VK_TAB, "tab", "tap"),
     VK_UNDERSCORE(KeyEvent.VK_UNDERSCORE, "_", "underscore", "under score");
     
-    /*
-     * nonfunctional keyevents, at least on windows/qwerty
-     * 
-     * to type these keys please use a shift then the corresponding key
-     * 
-     * 
-     *  //   VK_BACK_QUOTE(), //#TODO come up with one word directive
-     *  //   VK_BRACELEFT(), //#TODO come up with one word directive
-        //   VK_BRACERIGHT(), //#TODO come up with one word directive
-             VK_COLON(KeyEvent.VK_COLON, ":", "colon", "full"),//#TODO nonfunc
-         *   VK_DOLLAR(KeyEvent.VK_DOLLAR, "$", "dollar", "cash"),//#TODO nonfunc
-         *   VK_EXCLAMATION_MARK(KeyEvent.VK_EXCLAMATION_MARK, "!", "exclamation", "bang"), //#TODO nonfunc
-             VK_GREATER(KeyEvent.VK_GREATER, ">", "greater", "great", "grater", "grate"),//#TODO nonfunc
-         *   VK_EURO_SIGN(KeyEvent.VK_EURO_SIGN, "euro"),//#TODO nonfunc
-             VK_LESS(KeyEvent.VK_LESS, "<", "lesser", "less"),//#TODO nonfunc
-     //      VK_LEFT_PARENTHESIS(), //#TODO come up with one word directive
-  //         VK_RIGHT_PARENTHESIS(),//#TODO come up with one word directive
-   *         VK_PLUS(KeyEvent.VK_PLUS, "+", "plus", "add"),//#TODO nonfunc
-             VK_MINUS(KeyEvent.VK_MINUS, "-", "minus", "subtract", "sub"),//#TODO nonfunc
-             VK_QUOTEDBL(KeyEvent.VK_QUOTEDBL, "\"", "rabbit", "double"),//#TODO nonfunc
-     * */
+    // nonfunctional keyevents, at least on windows/qwerty 
+    // to type these keys please use a shift then the corresponding key
     
+    // VK_BACK_QUOTE(), //#TODO come up with one word directive
+    // VK_BRACELEFT(), //#TODO come up with one word directive
+    // VK_BRACERIGHT(), //#TODO come up with one word directive
+    // VK_COLON(KeyEvent.VK_COLON, ":", "colon", "full"),//#TODO nonfunc
+    // VK_DOLLAR(KeyEvent.VK_DOLLAR, "$", "dollar", "cash"),//#TODO nonfunc
+    // VK_EXCLAMATION_MARK(KeyEvent.VK_EXCLAMATION_MARK, "!", "exclamation", "bang"), //#TODO nonfunc
+    // VK_GREATER(KeyEvent.VK_GREATER, ">", "greater", "great", "grater", "grate"),//#TODO nonfunc
+    // VK_EURO_SIGN(KeyEvent.VK_EURO_SIGN, "euro"),//#TODO nonfunc
+    // VK_LESS(KeyEvent.VK_LESS, "<", "lesser", "less"),//#TODO nonfunc
+    // VK_LEFT_PARENTHESIS(), //#TODO come up with one word directive
+    // VK_RIGHT_PARENTHESIS(),//#TODO come up with one word directive
+    // VK_PLUS(KeyEvent.VK_PLUS, "+", "plus", "add"),//#TODO nonfunc
+    // VK_MINUS(KeyEvent.VK_MINUS, "-", "minus", "subtract", "sub"),//#TODO nonfunc
+    // VK_QUOTEDBL(KeyEvent.VK_QUOTEDBL, "\"", "rabbit", "double"),//#TODO nonfunc
 	
-	private static Map<String, StreamStateKeypress> directiveMap = null;
+	// private static Map<String, StreamStateKeypress> directiveMap = null;
+
+    private static Map<Integer, String> keypressToDirective = new HashMap<>();
+    private static Map<String, StreamStateKeypress> directiveToKeypressInteger = null;
+    // private static Map<String, StreamStateKeypress> directiveToKeypressString = null;
 
 	private int keyEvent;
     private String[] directives;
@@ -111,21 +110,31 @@ public enum StreamStateKeypress {
         this.directives = directives;
 	}
 
-    public int getKeyEvent() {
-        return keyEvent;
+    // public int getKeyEvent() {
+    //     return keyEvent;
+    // }
+
+    // public static StreamStateKeypress getKeypress(String directive) {
+    //     if(directiveMap == null) {
+    //         directiveMap = new HashMap<>();
+    //         for(StreamStateKeypress keypress : values())
+    //             for(String d : keypress.directives)
+    //                 directiveMap.put(d, keypress);
+    //     }
+
+    //     // NewKeyPress.getKeypress("three").getKeyEvent();
+
+    //     return directiveMap.get(directive);
+    // }
+    // //some way to send phoenetic and return a keypress
+    
+    public StreamStateKeypress directiveToInt(String directive) {
+        return directiveToKeypressInteger.get(directive);
     }
-
-    public static StreamStateKeypress getKeypress(String directive) {
-        if(directiveMap == null) {
-            directiveMap = new HashMap<>();
-            for(StreamStateKeypress keypress : values())
-                for(String d : keypress.directives)
-                    directiveMap.put(d, keypress);
-        }
-
-        // NewKeyPress.getKeypress("three").getKeyEvent();
-
-        return directiveMap.get(directive);
+    
+    public void updateKeypresses() {
+        for(StreamStateKeypress keypress : values())
+            for(String d : keypress.directives)
+                directiveToKeypressInteger.put(d, keypress);
     }
-	//some way to send phoenetic and return a keypress
 }
