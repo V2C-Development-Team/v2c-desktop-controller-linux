@@ -80,9 +80,6 @@ public class V2CLinuxDesktopController {
 
       Logger.onInfo(LOG_LABEL, String.format("Intending to connect to dispatcher at %1$s.", destination));
 
-      // KeyboardRobot Test
-      // KeyboardRobot keyboardCommandRobot = new KeyboardRobot();
-      // keyboardCommandRobot.typeTest();
 
       currentRecognitionState = new RecognitionStateContext();
       

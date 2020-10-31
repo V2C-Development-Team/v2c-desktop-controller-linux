@@ -171,6 +171,58 @@ public class KeyboardRobot {
 			Logger.onDebug(LOG_LABEL, "Could not release alt");
 		}
     }
+    
+    public static void holdShift() {
+    	KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_SHIFT);
+			
+		}
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not hold Shift");
+		}
+    	
+    }
+    public static void releaseShift() {
+    	KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			
+			robot.releaseKey(KeyEvent.VK_SHIFT);
+		}
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not release Shift");
+		}
+    }
+    
+    public static void copy() {
+		KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_CONTROL);
+			robot.holdKey(KeyEvent.VK_C);
+			robot.releaseKey(KeyEvent.VK_C);
+			robot.releaseKey(KeyEvent.VK_CONTROL);
+		}
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not copy");
+		}
+	}
+    
+    public static void paste() {
+		KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_CONTROL);
+			robot.holdKey(KeyEvent.VK_V);
+			robot.releaseKey(KeyEvent.VK_V);
+			robot.releaseKey(KeyEvent.VK_CONTROL);
+		}
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not copy");
+		}
+	}
   
 	
 	public static void maximize() {

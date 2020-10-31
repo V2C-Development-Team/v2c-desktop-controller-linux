@@ -17,12 +17,15 @@ public class StateMachine implements Runnable {
 	private static final String STREAMING_MODE = "streaming";
 	private static final String TAB = "tab";
 	private static final String ALT = "alt";
-	
+	private static final String SELECT = "select";
+	private static final String COPY = "copy";
+	private static final String PASTE = "paste";
 	private static final String MAXIMIZE = "maximize";
 	private static final String MINIMIZE = "minimize";
 	private static final String LOG_LABEL = "DESKTOP_STATEMACHINE";
 	private ConfigurationData configurationData = null;
 	private boolean altHeld = false;
+	private boolean shiftHeld = false;
 
 	private LinkedList<String> incomingBuffer = new LinkedList<>();// buffer for incoming commands
 	private LinkedList<String> confirmedBuffer = new LinkedList<>();// buffer for building targeted outgoing commands to
@@ -102,12 +105,25 @@ public class StateMachine implements Runnable {
 						myState.setState(new StreamState());
 					case ALT:
 						if(altHeld) {
-							KeyboardRobot.releaseAlt();
-							altHeld = false;
-						}else {
-							KeyboardRobot.holdAlt();
-							altHeld = true;
+							KeyboardRobot.releaseAlt(); altHeld = false;
+							}
+						else {
+							KeyboardRobot.holdAlt(); altHeld = true;
 						}
+						break;
+					case SELECT:
+						if(shiftHeld) {
+							KeyboardRobot.releaseShift(); altHeld = false;
+						}
+						else {
+							KeyboardRobot.holdShift(); altHeld = true;
+						}
+						break;
+					case COPY:
+						KeyboardRobot.copy();
+						break;
+					case PASTE:
+						KeyboardRobot.paste();
 						break;
 					case TAB:
 						KeyboardRobot.tab();
