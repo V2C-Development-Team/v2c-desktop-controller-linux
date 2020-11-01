@@ -40,7 +40,7 @@ public class Hypervisor implements StateListener {
 
 	private Bootloader bootloader = null;
 	private Machine machine = null;
-	private boolean streamMode = false;
+	private static final String UNDO = "undo";
 
 	/**
 	 * Instantiates the hypervisor.
@@ -111,9 +111,14 @@ public class Hypervisor implements StateListener {
 						try {
 							KeyboardRobot robot = new KeyboardRobot();
 							String keypress = machine.getRegister().get("keypress").remove(0);
+							
+							if(keypress.equalsIgnoreCase(UNDO)) {
+								robot.holdKey(KeyEvent.VK_BACK_SPACE);
+								robot.releaseKey(KeyEvent.VK_BACK_SPACE);
+							}
 							Logger.onDebug(LOG_LABEL, "type " + keypress);
 							
-							
+						
 								NewKeypress pressToSend = NewKeypress.getKeypress(keypress);
 								// if shift flag that next letter is shifted
 								if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
@@ -237,12 +242,7 @@ public class Hypervisor implements StateListener {
 		Logger.onDebug(LOG_LABEL, "--- Rebooting...");
 		machine.loadState(bootloader.getInitialState());
 	}
-
-	public boolean isStreamMode() {
-		return streamMode;
-	}
-
-	public void setStreamMode(boolean streamMode) {
-		this.streamMode = streamMode;
-	}
+	
 }
+
+	

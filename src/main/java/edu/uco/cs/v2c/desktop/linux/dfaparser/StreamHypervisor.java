@@ -17,6 +17,7 @@ package edu.uco.cs.v2c.desktop.linux.dfaparser;
 
 
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import edu.uco.cs.v2c.desktop.linux.command.KeyboardRobot;
@@ -37,7 +38,8 @@ public class StreamHypervisor extends Hypervisor implements StateListener {
 
 	private Bootloader bootloader = null;
 	private Machine machine = null;
-	
+	private static final String UNDO = "undo";
+	private  LinkedList<Integer> tokenSizeList = new LinkedList<>();
 
 	/**
 	 * Instantiates the hypervisor.
@@ -108,17 +110,23 @@ public class StreamHypervisor extends Hypervisor implements StateListener {
 						try {
 							KeyboardRobot robot = new KeyboardRobot();
 							String keypress = machine.getRegister().get("keypress").remove(0);
+							if(keypress.equalsIgnoreCase(UNDO)) { 
+								backspace(getLastTokenSize());
+								continue;
+							}
 							Logger.onDebug(LOG_LABEL, "type " + keypress);
 							// check the ENUM to see if the token = directive for key
 							
 								StreamStateKeypress pressToSend = StreamStateKeypress.getKeypress(keypress);
 								// type whole words not in NewKeypress only if we are in streamMode
 								if (pressToSend == null) {
+									pushTokenSize(keypress.length() + 1); // +  1 for the space
 									robot.type(keypress);
 									robot.holdKey(KeyEvent.VK_SPACE);
 									robot.releaseKey(KeyEvent.VK_SPACE);
 								} else {
 									// if shift flag that next letter is shifted
+									pushTokenSize(1); // one for one character
 									if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
 										shift = true;
 										robot.holdKey(KeyEvent.VK_SHIFT); // hold shift till next comes in
@@ -212,11 +220,7 @@ public class StreamHypervisor extends Hypervisor implements StateListener {
 						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
 						int parsedNumber = numberToFind.getNumber();
 						Logger.onDebug(LOG_LABEL, "backspace " + parsedNumber + " spaces");
-						for (int i = 0; i < parsedNumber; i++) { // backspace the correct number of times
-							robot.holdKey(KeyEvent.VK_BACK_SPACE);
-							robot.releaseKey(KeyEvent.VK_BACK_SPACE);
-
-						}
+						backspace(parsedNumber);
 					}
 
 					catch (Exception e) { // parse failed
@@ -240,6 +244,38 @@ public class StreamHypervisor extends Hypervisor implements StateListener {
 		Logger.onDebug(LOG_LABEL, "--- Rebooting...");
 		machine.loadState(bootloader.getInitialState());
 	}
+	
+	
+private  void pushTokenSize(int tokenSize) {
+	synchronized(tokenSizeList) {
+		if (tokenSizeList.size() > 99) {
+			tokenSizeList.remove(0);
+		}
+		tokenSizeList.add(tokenSize);
+	}
+} 
 
+private int getLastTokenSize() {
+	synchronized(tokenSizeList) {
+		if(tokenSizeList.size() > 0) {
+			return tokenSizeList.pollLast();
+		}
+		
+		else return 0;
+	}
+}
+
+private void backspace(int number) {
+	try {
+		KeyboardRobot robot = new KeyboardRobot();
+	for (int i = 0; i < number; i++) { // backspace the correct number of times
+		robot.holdKey(KeyEvent.VK_BACK_SPACE);
+		robot.releaseKey(KeyEvent.VK_BACK_SPACE);
+
+		}
+	}catch(Exception e) {
+		Logger.onDebug(LOG_LABEL, "Observer could not backspace.");
+	}
+}
 
 }

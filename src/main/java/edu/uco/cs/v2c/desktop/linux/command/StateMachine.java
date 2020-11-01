@@ -22,11 +22,11 @@ public class StateMachine implements Runnable {
 	private static final String PASTE = "paste";
 	private static final String MAXIMIZE = "maximize";
 	private static final String MINIMIZE = "minimize";
+	private static final String UNDO = "undo";
 	private static final String LOG_LABEL = "DESKTOP_STATEMACHINE";
 	private ConfigurationData configurationData = null;
 	private boolean altHeld = false;
 	private boolean shiftHeld = false;
-
 	private LinkedList<String> incomingBuffer = new LinkedList<>();// buffer for incoming commands
 	private LinkedList<String> confirmedBuffer = new LinkedList<>();// buffer for building targeted outgoing commands to
 																	// modules
@@ -81,13 +81,15 @@ public class StateMachine implements Runnable {
 
 			while (!thread.isInterrupted()) {
 				String token = null;
-
+				
 				synchronized (incomingBuffer) {
 					while (incomingBuffer.isEmpty()) {
 						flush();
 						incomingBuffer.wait();
 					}
-					token = incomingBuffer.remove(0);
+					token = incomingBuffer.remove(0);					
+					
+					
 					incomingBuffer.notifyAll();
 				}
 				if (foundModeSwitch) {
@@ -103,6 +105,7 @@ public class StateMachine implements Runnable {
 					case STREAMING_MODE:
 						flush();
 						myState.setState(new StreamState());
+						break;
 					case ALT:
 						if(altHeld) {
 							KeyboardRobot.releaseAlt(); altHeld = false;
@@ -113,10 +116,10 @@ public class StateMachine implements Runnable {
 						break;
 					case SELECT:
 						if(shiftHeld) {
-							KeyboardRobot.releaseShift(); altHeld = false;
+							KeyboardRobot.releaseShift(); shiftHeld = false;
 						}
 						else {
-							KeyboardRobot.holdShift(); altHeld = true;
+							KeyboardRobot.holdShift(); shiftHeld = true;
 						}
 						break;
 					case COPY:
@@ -134,6 +137,7 @@ public class StateMachine implements Runnable {
 					case MINIMIZE:
 						KeyboardRobot.minimize();
 						break;
+					
 					default:
 						confirmedBuffer.add(MODE_SWITCH_KEYWORD);
 						confirmedBuffer.add(token);
@@ -144,8 +148,8 @@ public class StateMachine implements Runnable {
 
 				} else if (token.equalsIgnoreCase(MODE_SWITCH_KEYWORD)) {
 					foundModeSwitch = true;
-				} else
-					confirmedBuffer.add(token);
+						
+				}else confirmedBuffer.add(token);
 
 			}
 		} catch (InterruptedException e) {
@@ -154,3 +158,5 @@ public class StateMachine implements Runnable {
 	}
 
 }
+
+
