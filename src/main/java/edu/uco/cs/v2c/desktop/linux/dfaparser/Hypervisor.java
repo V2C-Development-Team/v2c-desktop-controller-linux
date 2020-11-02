@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import edu.uco.cs.v2c.desktop.linux.command.KeyboardRobot;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
 import edu.uco.cs.v2c.desktop.linux.model.NewKeypress;
+import edu.uco.cs.v2c.desktop.linux.model.Numeric;
 
 
 /**
@@ -155,7 +156,9 @@ public class Hypervisor implements StateListener {
 						String direction = machine.getRegister().get("direction").get(0);
 						KeyboardRobot robot = new KeyboardRobot();
 						// String number = machine.getRegister().get("number").get(0);
-						int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
+						//int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
+						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
+						int parsedNumber = numberToFind.getNumber();
 						int pressToSend = -1;
 						// we have the number and direction strings, match the direction to the
 						// appropriate one.
@@ -204,7 +207,9 @@ public class Hypervisor implements StateListener {
 
 					try { // try to parse it, so we can avoid a horrible switch statement;
 						KeyboardRobot robot = new KeyboardRobot();
-						int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
+						//int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
+						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
+						int parsedNumber = numberToFind.getNumber();
 						Logger.onDebug(LOG_LABEL, "backspace " + parsedNumber + " spaces");
 						for (int i = 0; i < parsedNumber; i++) { // backspace the correct number of times
 							robot.holdKey(KeyEvent.VK_BACK_SPACE);
