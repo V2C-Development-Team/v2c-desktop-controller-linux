@@ -7,16 +7,19 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.uco.cs.v2c.desktop.linux.log.Logger;
+
 import java.lang.reflect.Field;
 
 public class KeyboardRobot {
 
 	private static Robot robot;
 	private int standardDelayPeriod;
-	private static final int STANDARD_DEAY = 100;
+	private static final int STANDARD_DELAY = 100;
+	private static final String LOG_LABEL = "KEYBOARDROBOT";
 	Map<String, Integer> keyCodeToInt = new HashMap<String, Integer>();
 	Map<Integer, String> intToKeyCode = new HashMap<Integer, String>();
-	private static int windowNextCounter = 48;
+	
 
 	public int keyStringToInt(String keyString) {
 		int keyInt = this.keyCodeToInt.get(keyString);
@@ -69,7 +72,7 @@ public class KeyboardRobot {
 		this.robot = new Robot();
 		robot.setAutoDelay(40);
 		robot.setAutoWaitForIdle(true);
-		this.setStandardDelayPeriod(STANDARD_DEAY);
+		this.setStandardDelayPeriod(STANDARD_DELAY);
 	}
 
 	public void pressString(String keyToPress) {
@@ -132,63 +135,74 @@ public class KeyboardRobot {
 		}
 	}
 	
-	public static void switchTextbox() {
+	public static void tab() {
 		KeyboardRobot robot;
 		try {
 			robot = new KeyboardRobot();
-			robot.type(KeyEvent.VK_TAB);
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			System.out.println("failed to switch text box");
+			robot.holdKey(KeyEvent.VK_TAB);
+			robot.releaseKey(KeyEvent.VK_TAB);
 		}
-		
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not hit Tab");
+		}
 		
 	}
 	
-	public static void windowNext() {
-		KeyboardRobot robot;
+    public static void holdAlt() {
+    	KeyboardRobot robot;
 		try {
-		if(windowNextCounter == 57) {
-			windowNextCounter = 48;
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_ALT);
+			
 		}
-		robot = new KeyboardRobot();
-		robot.holdKey(KeyEvent.VK_WINDOWS);
-		robot.type(windowNextCounter);
-		robot.releaseKey(KeyEvent.VK_WINDOWS);
-		windowNextCounter++;
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not hold Alt");
 		}
-		catch (AWTException e) {
-			System.out.println("failed to switch windows");
+    	
+    }
+    public static void releaseAlt() {
+    	KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			
+			robot.releaseKey(KeyEvent.VK_ALT);
 		}
-	}
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not release alt");
+		}
+    }
+  
 	
 	public static void maximize() {
 		KeyboardRobot robot;
 		try {
 			robot = new KeyboardRobot();
 			robot.holdKey(KeyEvent.VK_WINDOWS);
-			robot.type(KeyEvent.VK_UP);
+			robot.holdKey(KeyEvent.VK_UP);
+			robot.releaseKey(KeyEvent.VK_UP);
 			robot.releaseKey(KeyEvent.VK_WINDOWS);
-			
 		}
 		catch(AWTException e) {
-			System.out.println("failed to maximize window");
+			Logger.onDebug(LOG_LABEL, "Could not maximize");
 		}
 	}
+	
 	
 	public static void minimize() {
 		KeyboardRobot robot;
 		try {
 			robot = new KeyboardRobot();
 			robot.holdKey(KeyEvent.VK_WINDOWS);
-			robot.type(KeyEvent.VK_DOWN);
+			robot.holdKey(KeyEvent.VK_DOWN);
+			robot.releaseKey(KeyEvent.VK_DOWN);
 			robot.releaseKey(KeyEvent.VK_WINDOWS);
-			
 		}
 		catch(AWTException e) {
-			System.out.println("failed to minimize window");
+			Logger.onDebug(LOG_LABEL, "Could not minimize");
 		}
 	}
+	
+	
 	
 	public  void holdKey(int i) {
 		robot.keyPress(i);

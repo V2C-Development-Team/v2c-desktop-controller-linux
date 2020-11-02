@@ -7,18 +7,22 @@ import edu.uco.cs.v2c.desktop.linux.model.CommandState;
 import edu.uco.cs.v2c.desktop.linux.model.ConfigurationData;
 import edu.uco.cs.v2c.desktop.linux.model.RecognitionState;
 import edu.uco.cs.v2c.desktop.linux.model.RecognitionStateContext;
+import edu.uco.cs.v2c.desktop.linux.model.StreamState;
 import edu.uco.cs.v2c.desktop.linux.model.TypingState;
 
 public class StateMachine implements Runnable {
 	private static final String MODE_SWITCH_KEYWORD = "alteration";
 	private static final String TYPING_MODE = "typing";
 	private static final String COMMAND_MODE = "command";
+	private static final String STREAMING_MODE = "streaming";
 	private static final String TAB = "tab";
-	private static final String WINDOW_NEXT = "window";
+	private static final String ALT = "alt";
+	
 	private static final String MAXIMIZE = "maximize";
 	private static final String MINIMIZE = "minimize";
 	private static final String LOG_LABEL = "DESKTOP_STATEMACHINE";
 	private ConfigurationData configurationData = null;
+	private boolean altHeld = false;
 
 	private LinkedList<String> incomingBuffer = new LinkedList<>();// buffer for incoming commands
 	private LinkedList<String> confirmedBuffer = new LinkedList<>();// buffer for building targeted outgoing commands to
@@ -84,25 +88,40 @@ public class StateMachine implements Runnable {
 					incomingBuffer.notifyAll();
 				}
 				if (foundModeSwitch) {
-					if (token.equalsIgnoreCase(TYPING_MODE)) {
+					switch(token.toLowerCase()) {
+					case TYPING_MODE:
 						flush();
 						myState.setState(new TypingState());
-					} else if (token.equalsIgnoreCase(COMMAND_MODE)) {
+						break;
+					case COMMAND_MODE:
 						flush();
 						myState.setState(new CommandState());
-					} else if (token.equalsIgnoreCase(TAB)) {
-						KeyboardRobot.switchTextbox();
-					} else if (token.equalsIgnoreCase(WINDOW_NEXT)) {
-						KeyboardRobot.windowNext();
-					} else if (token.equalsIgnoreCase(MAXIMIZE)) {
+						break;
+					case STREAMING_MODE:
+						flush();
+						myState.setState(new StreamState());
+					case ALT:
+						if(altHeld) {
+							KeyboardRobot.releaseAlt();
+							altHeld = false;
+						}else {
+							KeyboardRobot.holdAlt();
+							altHeld = true;
+						}
+						break;
+					case TAB:
+						KeyboardRobot.tab();
+						break;
+					case MAXIMIZE:
 						KeyboardRobot.maximize();
-					} else if (token.equalsIgnoreCase(MINIMIZE)) {
+						break;
+					case MINIMIZE:
 						KeyboardRobot.minimize();
-					}
-
-					else {
+						break;
+					default:
 						confirmedBuffer.add(MODE_SWITCH_KEYWORD);
 						confirmedBuffer.add(token);
+					
 					}
 
 					foundModeSwitch = false;

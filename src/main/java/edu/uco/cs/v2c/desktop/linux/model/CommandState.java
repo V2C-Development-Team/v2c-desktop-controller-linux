@@ -25,17 +25,6 @@ public class CommandState implements RecognitionState {
         } else {
             System.out.println("command/macro not found");
 
-            // if command is not found, attempt to type the command text
-            // try {
-            //     KeyboardRobot robot = new KeyboardRobot();
-            //     robot.type(commandText);
-            //     robot.holdKey(KeyEvent.VK_SPACE);
-            //     robot.releaseKey(KeyEvent.VK_SPACE);
-            // } catch (AWTException e) {
-            //     // TODO Auto-generated catch block
-            //     e.printStackTrace();
-            // }
-
             // System.out.println("trying to execute anyway");
             // terminal.ExecuteCommand(targetCommand);
         }
