@@ -161,6 +161,7 @@ public class Hypervisor implements StateListener {
 						String direction = machine.getRegister().get("direction").get(0);
 						KeyboardRobot robot = new KeyboardRobot();
 						// String number = machine.getRegister().get("number").get(0);
+						//int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
 						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
 						int parsedNumber = numberToFind.getNumber();
 						int pressToSend = -1;
@@ -211,6 +212,7 @@ public class Hypervisor implements StateListener {
 
 					try { // try to parse it, so we can avoid a horrible switch statement;
 						KeyboardRobot robot = new KeyboardRobot();
+						//int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
 						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
 						int parsedNumber = numberToFind.getNumber();
 						Logger.onDebug(LOG_LABEL, "backspace " + parsedNumber + " spaces");

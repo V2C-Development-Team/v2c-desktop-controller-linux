@@ -1,6 +1,3 @@
-  
-package edu.uco.cs.v2c.desktop.linux.model;
-
 import java.util.HashMap;
 import java.util.Map;
 
