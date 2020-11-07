@@ -254,6 +254,20 @@ public class KeyboardRobot {
 		}
 	}
 	
+	//added to clean up some minor issues with select/copy/paste
+	public static void rightArrow() {
+		KeyboardRobot robot;
+		try {
+			robot = new KeyboardRobot();
+			robot.holdKey(KeyEvent.VK_RIGHT);
+			robot.releaseKey(KeyEvent.VK_RIGHT);
+
+		}
+		catch(AWTException e) {
+			Logger.onDebug(LOG_LABEL, "Could not Arrow Right");
+		}
+	}
+	
 	
 	
 	public  void holdKey(int i) {

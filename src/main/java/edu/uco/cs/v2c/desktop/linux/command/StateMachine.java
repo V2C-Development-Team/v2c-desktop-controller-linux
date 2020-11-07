@@ -116,7 +116,9 @@ public class StateMachine implements Runnable {
 						break;
 					case SELECT:
 						if(shiftHeld) {
-							KeyboardRobot.releaseShift(); shiftHeld = false;
+							KeyboardRobot.releaseShift();
+							KeyboardRobot.rightArrow();
+							shiftHeld = false;
 						}
 						else {
 							KeyboardRobot.holdShift(); shiftHeld = true;
