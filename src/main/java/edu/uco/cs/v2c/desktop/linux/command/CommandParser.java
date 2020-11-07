@@ -24,7 +24,7 @@ public class CommandParser implements CommandListener {
   public CommandParser(RecognitionStateContext currentRecognitionState, ConfigurationData configurationData) {
     this.currentRecognitionState = currentRecognitionState;
     this.configurationData = configurationData;
-    stateMachine = StateMachine.build(configurationData,currentRecognitionState);
+    stateMachine = StateMachine.build(configurationData, currentRecognitionState);
   }
 
   /**
@@ -32,14 +32,11 @@ public class CommandParser implements CommandListener {
    */
   @Override
   public void onIncomingCommand(RouteCommandPayload payload) {
-    // TerminalCommandJava terminal = new TerminalCommandJava();
-
     String targetCommand = payload.getCommand();
-    
+
     if (payload.getRecipient().equals(DESKTOP_VAR)) {
-
-    	stateMachine.queue(targetCommand);//handles what mode we are in and passes to the appropriate execute()
-
+      // handles what mode we are in and passes to the appropriate execute()
+      stateMachine.queue(targetCommand);
     } else {
       System.out.println("=========recipient is not desktop========");
     }

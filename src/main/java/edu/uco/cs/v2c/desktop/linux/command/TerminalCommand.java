@@ -1,6 +1,6 @@
 package edu.uco.cs.v2c.desktop.linux.command;
 
-public class TerminalCommandJava {
+public class TerminalCommand {
 
 	// Jon-Heavily edited this and removed extraneous code
 	// I have removed the kickback of any output, but if
@@ -8,11 +8,11 @@ public class TerminalCommandJava {
 	// cook some modifications up.
 
 	Runtime rt;
-	TerminalCommandJava rte;
+	TerminalCommand rte;
 
 	public void ExecuteCommand(String s) {
 		rt = Runtime.getRuntime();
-		rte = new TerminalCommandJava();
+		rte = new TerminalCommand();
 
 		Thread thread = new Thread(new Runnable() {
 
