@@ -9,6 +9,14 @@ public class Command {
     String directive;
     Boolean enabled;
 
+    public Command(String name, String description, String[] executables, String directive, Boolean enabled) {
+        this.name = name;
+        this.description = description;
+        this.executables = executables;
+        this.directive = directive;
+        this.enabled = enabled;
+    }
+
     public String getName() {
         return name;
     }

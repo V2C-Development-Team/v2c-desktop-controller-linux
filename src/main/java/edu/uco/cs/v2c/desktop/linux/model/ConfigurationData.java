@@ -4,9 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ConfigurationData {
-	private Command[] commands = new Command[0];
-	private Macro[] macros = new Macro[0]; //Jon- Updated this so it doesn't throw NPE when looking for the arrays
-	
+    private Command[] commands = new Command[0];
+    private Macro[] macros = new Macro[0]; // Jon- Updated this so it doesn't throw NPE when looking for the arrays
 
     public Command findCommand(String targetCommand) {
         Command foundCommand = null;
@@ -72,21 +71,17 @@ public class ConfigurationData {
 
         for (int i = 0; i < commandsLength; i++) {
             JSONObject currentCommand = commands.getJSONObject(i);
-            temporaryCommandArray[i] = new Command();
             String name = currentCommand.getString("name");
-            temporaryCommandArray[i].setName(name);
             String description = currentCommand.getString("description");
-            temporaryCommandArray[i].setDescription(description);
             JSONArray executables = currentCommand.getJSONArray("executables");
             String[] executablesString = new String[executables.length()];
             for (int e = 0; e < executables.length(); e++) {
                 executablesString[e] = executables.getString(e);
             }
-            temporaryCommandArray[i].setExecutables(executablesString);
             String directive = currentCommand.getString("directive").toLowerCase();
-            temporaryCommandArray[i].setDirective(directive);
             Boolean enabled = currentCommand.getBoolean("enabled");
-            temporaryCommandArray[i].setEnabled(enabled);
+
+            temporaryCommandArray[i] = new Command(name, description, executablesString, directive, enabled);
         }
 
         setCommands(temporaryCommandArray);
@@ -98,21 +93,17 @@ public class ConfigurationData {
 
         for (int i = 0; i < macrosLength; i++) {
             JSONObject currentMacro = macros.getJSONObject(i);
-            temporaryMacroArray[i] = new Macro();
             String name = currentMacro.getString("name");
-            temporaryMacroArray[i].setName(name);
             String description = currentMacro.getString("description");
-            temporaryMacroArray[i].setDescription(description);
             JSONArray keypresses = currentMacro.getJSONArray("keypresses");
             String[] keypressesString = new String[keypresses.length()];
             for (int e = 0; e < keypresses.length(); e++) {
                 keypressesString[e] = keypresses.getString(e);
             }
-            temporaryMacroArray[i].setKeypresses(keypressesString);
             String directive = currentMacro.getString("directive").toLowerCase();
-            temporaryMacroArray[i].setDirective(directive);
             Boolean enabled = currentMacro.getBoolean("enabled");
-            temporaryMacroArray[i].setEnabled(enabled);
+
+            temporaryMacroArray[i] = new Macro(name, description, keypressesString, directive, enabled);
         }
 
         setMacros(temporaryMacroArray);
