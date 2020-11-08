@@ -4,20 +4,26 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum NewKeypress {
+public enum StreamStateKeypress {
 	
 	// list all neeeded keys
 	// define ie VK_3 -> thre, three 3
 	// dont use a directive ie zero 0, ieie the name you call it in more than one key
     VK_0(KeyEvent.VK_0, "zero", "0"),
-    VK_1(KeyEvent.VK_1, "one", "won",  "1"),
-    VK_2(KeyEvent.VK_2, "two", "to", "too", "2"),
-    VK_3(KeyEvent.VK_3, "three", "tree", "3"),
-    VK_4(KeyEvent.VK_4, "four", "fore", "4"),
-    VK_5(KeyEvent.VK_5, "five", "fife", "5"),
+    // VK_1(KeyEvent.VK_1, "one", "won",  "1"),
+    VK_1(KeyEvent.VK_1, "one", "1"),
+    // VK_2(KeyEvent.VK_2, "two", "to", "too", "2"),
+    VK_2(KeyEvent.VK_2, "two", "too", "2"),
+    // VK_3(KeyEvent.VK_3, "three", "tree", "3"),
+    VK_3(KeyEvent.VK_3, "three", "3"),
+    // VK_4(KeyEvent.VK_4, "four", "fore", "4"),
+    VK_4(KeyEvent.VK_4, "four", "4"),
+    // VK_5(KeyEvent.VK_5, "five", "fife", "5"),
+    VK_5(KeyEvent.VK_5, "five", "5"),
     VK_6(KeyEvent.VK_6, "six", "6"),
     VK_7(KeyEvent.VK_7, "seven", "7" ),
-    VK_8(KeyEvent.VK_8, "eight", "ate", "8"),
+    // VK_8(KeyEvent.VK_8, "eight", "ate", "8"),
+    VK_8(KeyEvent.VK_8, "eight", "8"),
     VK_9(KeyEvent.VK_9, "nine", "niner", "9"),
     VK_A(KeyEvent.VK_A, "A", "a", "alpha"),
     VK_B(KeyEvent.VK_B, "B", "b", "bravo"),
@@ -89,32 +95,46 @@ public enum NewKeypress {
     // VK_PLUS(KeyEvent.VK_PLUS, "+", "plus", "add"),//#TODO nonfunc
     // VK_MINUS(KeyEvent.VK_MINUS, "-", "minus", "subtract", "sub"),//#TODO nonfunc
     // VK_QUOTEDBL(KeyEvent.VK_QUOTEDBL, "\"", "rabbit", "double"),//#TODO nonfunc
-    
-	private static Map<String, NewKeypress> directiveMap = null;
+	
+	 private static Map<String, StreamStateKeypress> directiveMap = null;
+
+    private static Map<Integer, String> keypressToDirective = new HashMap<>();
+    private static Map<String, StreamStateKeypress> directiveToKeypressInteger = null;
+     private static Map<String, StreamStateKeypress> directiveToKeypressString = null;
 
 	private int keyEvent;
     private String[] directives;
 
-	private NewKeypress(int event, String... directives) {
+	private StreamStateKeypress(int event, String... directives) {
 		this.keyEvent = event;
         this.directives = directives;
 	}
 
-    public int getKeyEvent() {
-        return keyEvent;
-    }
+     public int getKeyEvent() {
+         return keyEvent;
+     }
 
-    public static NewKeypress getKeypress(String directive) {
-        if(directiveMap == null) {
+     public static StreamStateKeypress getKeypress(String directive) {
+         if(directiveMap == null) {
             directiveMap = new HashMap<>();
-            for(NewKeypress keypress : values())
+             for(StreamStateKeypress keypress : values())
                 for(String d : keypress.directives)
-                    directiveMap.put(d, keypress);
-        }
+                     directiveMap.put(d, keypress);
+       }
 
         // NewKeyPress.getKeypress("three").getKeyEvent();
 
-        return directiveMap.get(directive);
+         return directiveMap.get(directive);
+     }
+    // //some way to send phoenetic and return a keypress
+    
+    public StreamStateKeypress directiveToInt(String directive) {
+        return directiveToKeypressInteger.get(directive);
     }
-	//some way to send phoenetic and return a keypress
+    
+    public void updateKeypresses() {
+        for(StreamStateKeypress keypress : values())
+            for(String d : keypress.directives)
+                directiveToKeypressInteger.put(d, keypress);
+    }
 }

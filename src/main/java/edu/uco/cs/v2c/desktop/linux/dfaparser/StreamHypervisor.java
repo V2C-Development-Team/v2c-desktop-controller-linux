@@ -17,15 +17,13 @@ package edu.uco.cs.v2c.desktop.linux.dfaparser;
 
 
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-
-
 import edu.uco.cs.v2c.desktop.linux.command.KeyboardRobot;
 import edu.uco.cs.v2c.desktop.linux.log.Logger;
-import edu.uco.cs.v2c.desktop.linux.model.NewKeypress;
 import edu.uco.cs.v2c.desktop.linux.model.Numeric;
-
+import edu.uco.cs.v2c.desktop.linux.model.StreamStateKeypress;
 
 /**
  * The faux hypervisor implementation to manage the machine and the values that
@@ -34,20 +32,21 @@ import edu.uco.cs.v2c.desktop.linux.model.Numeric;
  * @author Caleb L. Power
  * @author Jon Craig - Adapted DFA-Observer-Java for use in V2C
  */
-public class Hypervisor implements StateListener {
+public class StreamHypervisor extends Hypervisor implements StateListener {
 
 	private static final String LOG_LABEL = "HYPERVISOR";
 
 	private Bootloader bootloader = null;
 	private Machine machine = null;
 	private static final String UNDO = "undo";
+	private  LinkedList<Integer> tokenSizeList = new LinkedList<>();
 
 	/**
 	 * Instantiates the hypervisor.
 	 * 
 	 * @throws Exception if the bootloader couldn't load the file
 	 */
-	public Hypervisor() throws Exception {
+	public StreamHypervisor() throws Exception {
 
 		String rawSchema = SchemaReader.readResource("/state_schema.json");
 		bootloader = new Bootloader(rawSchema);
@@ -111,26 +110,34 @@ public class Hypervisor implements StateListener {
 						try {
 							KeyboardRobot robot = new KeyboardRobot();
 							String keypress = machine.getRegister().get("keypress").remove(0);
-							
-							if(keypress.equalsIgnoreCase(UNDO)) {
-								robot.holdKey(KeyEvent.VK_BACK_SPACE);
-								robot.releaseKey(KeyEvent.VK_BACK_SPACE);
+							if(keypress.equalsIgnoreCase(UNDO)) { 
+								backspace(getLastTokenSize());
+								continue;
 							}
 							Logger.onDebug(LOG_LABEL, "type " + keypress);
+							// check the ENUM to see if the token = directive for key
 							
-						
-								NewKeypress pressToSend = NewKeypress.getKeypress(keypress);
-								// if shift flag that next letter is shifted
-								if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
-									shift = true;
-									robot.holdKey(KeyEvent.VK_SHIFT); // hold shift till next comes in
-									continue;
-								}
-								robot.holdKey(pressToSend.getKeyEvent()); // press key
-								robot.releaseKey(pressToSend.getKeyEvent());
-								if (shift == true) {
-									robot.releaseKey(KeyEvent.VK_SHIFT); // if shift, unshift after
-									shift = false;
+								StreamStateKeypress pressToSend = StreamStateKeypress.getKeypress(keypress);
+								// type whole words not in NewKeypress only if we are in streamMode
+								if (pressToSend == null) {
+									pushTokenSize(keypress.length() + 1); // +  1 for the space
+									robot.type(keypress);
+									robot.holdKey(KeyEvent.VK_SPACE);
+									robot.releaseKey(KeyEvent.VK_SPACE);
+								} else {
+									// if shift flag that next letter is shifted
+									pushTokenSize(1); // one for one character
+									if (pressToSend.getKeyEvent() == KeyEvent.VK_SHIFT) {
+										shift = true;
+										robot.holdKey(KeyEvent.VK_SHIFT); // hold shift till next comes in
+										continue;
+									}
+									robot.holdKey(pressToSend.getKeyEvent()); // press key
+									robot.releaseKey(pressToSend.getKeyEvent());
+									if (shift == true) {
+										robot.releaseKey(KeyEvent.VK_SHIFT); // if shift, unshift after
+										shift = false;
+									}
 								}
 							
 
@@ -160,8 +167,6 @@ public class Hypervisor implements StateListener {
 					try {
 						String direction = machine.getRegister().get("direction").get(0);
 						KeyboardRobot robot = new KeyboardRobot();
-						// String number = machine.getRegister().get("number").get(0);
-						//int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
 						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
 						int parsedNumber = numberToFind.getNumber();
 						int pressToSend = -1;
@@ -212,15 +217,10 @@ public class Hypervisor implements StateListener {
 
 					try { // try to parse it, so we can avoid a horrible switch statement;
 						KeyboardRobot robot = new KeyboardRobot();
-						//int parsedNumber = Math.abs(Integer.parseInt(machine.getRegister().get("number").get(0)));
 						Numeric numberToFind = Numeric.getNumeric(machine.getRegister().get("number").get(0));
 						int parsedNumber = numberToFind.getNumber();
 						Logger.onDebug(LOG_LABEL, "backspace " + parsedNumber + " spaces");
-						for (int i = 0; i < parsedNumber; i++) { // backspace the correct number of times
-							robot.holdKey(KeyEvent.VK_BACK_SPACE);
-							robot.releaseKey(KeyEvent.VK_BACK_SPACE);
-
-						}
+						backspace(parsedNumber);
 					}
 
 					catch (Exception e) { // parse failed
@@ -245,6 +245,37 @@ public class Hypervisor implements StateListener {
 		machine.loadState(bootloader.getInitialState());
 	}
 	
+	
+private  void pushTokenSize(int tokenSize) {
+	synchronized(tokenSizeList) {
+		if (tokenSizeList.size() > 99) {
+			tokenSizeList.remove(0);
+		}
+		tokenSizeList.add(tokenSize);
+	}
+} 
+
+private int getLastTokenSize() {
+	synchronized(tokenSizeList) {
+		if(tokenSizeList.size() > 0) {
+			return tokenSizeList.pollLast();
+		}
+		
+		else return 0;
+	}
 }
 
-	
+private void backspace(int number) {
+	try {
+		KeyboardRobot robot = new KeyboardRobot();
+	for (int i = 0; i < number; i++) { // backspace the correct number of times
+		robot.holdKey(KeyEvent.VK_BACK_SPACE);
+		robot.releaseKey(KeyEvent.VK_BACK_SPACE);
+
+		}
+	}catch(Exception e) {
+		Logger.onDebug(LOG_LABEL, "Observer could not backspace.");
+	}
+}
+
+}

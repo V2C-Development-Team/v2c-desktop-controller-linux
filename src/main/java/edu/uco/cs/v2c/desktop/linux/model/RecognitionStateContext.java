@@ -7,8 +7,12 @@ public class RecognitionStateContext {
         this.currentState = new CommandState();
     }
 
-    public void getState(){
+    public void printState() {
         System.out.println(currentState);
+    }
+
+    public RecognitionState getState() {
+        return this.currentState; 
     }
 
     public void setState(RecognitionState state) {
